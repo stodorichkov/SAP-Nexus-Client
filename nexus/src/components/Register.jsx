@@ -1,9 +1,11 @@
 import {useEffect, useRef, useState} from "react";
 import {Button, TextField, Typography} from "@mui/material";
+import api from "../api/axios.jsx";
 
 
 const USER_REGEX = /^[a-zA-Z0-9-_]{3,25}$/
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/
+const REGISTER_URL = "/register"
 
 const Register = () => {
 
@@ -51,11 +53,26 @@ const Register = () => {
             setErrorMessage("Invalid entry")
             return
         }
-        setSuccess(true)
+        try {
+            const response = await api.post(REGISTER_URL,
+                JSON.stringify({firstName, lastName, username, password, matchPassword}),
+                {
+                    headers: {"Content-Type": 'application/json'},
+                    withCredentials: true
+                })
+            console.log(response.data)
+            setSuccess(true)
+        } catch (err) {
+            if(!err?.response) {
+                setErrorMessage("No server response")
+            } else {
+                setErrorMessage('Registration failed')
+            }
+        }
     }
-
     return (
         <>
+            <Typography varinat="body3" className={errorMessage ? "visible" : "hidden"}>{errorMessage}</Typography>
             <Typography variant="h1">Register</Typography>
             <form onSubmit={handleSubmit}>
                 <TextField
@@ -116,7 +133,7 @@ const Register = () => {
                     Passwords must match.
                 </Typography>
 
-                <Button variant="contained" disabled={!validUsername || !validPassword || !validMatch}>
+                <Button variant="contained" type="submit" disabled={!validUsername || !validPassword || !validMatch}>
                     Sign up
                 </Button>
             </form>
