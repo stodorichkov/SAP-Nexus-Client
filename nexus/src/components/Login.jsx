@@ -1,17 +1,22 @@
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, TextField, Typography} from "@mui/material";
-import AuthContext from "../context/AuthProvider.jsx";
 import api from "../api/axios.jsx";
+import useAuth from "../hooks/useAuth.jsx";
+import {Link, useNavigate, useLocation} from 'react-router-dom';
 
 const LOGIN_URL = '/login'
 
 const Login = () => {
 
-    const {setAuth} = useContext(AuthContext)
+    const {setAuth} = useAuth()
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/"
+
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
-    const [success, setSuccess] = useState(false)
 
     useEffect(() => {
         setErrorMessage("")
@@ -31,7 +36,7 @@ const Login = () => {
             setAuth({username, password, roles})
             setUsername('')
             setPassword('')
-            setSuccess(true)
+            navigate(from, {replace: true})
         } catch(err) {
             if(!err?.response)
                 setErrorMessage('No server response')
@@ -42,9 +47,6 @@ const Login = () => {
             else
                 setErrorMessage('Login failed')
         }
-
-
-
     }
 
     return (
