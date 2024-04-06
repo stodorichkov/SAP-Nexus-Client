@@ -21,7 +21,7 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [validPassword, setValidPassword] = useState(false)
 
-    const [matchPassword, setMatchPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [validMatch, setValidMatch] = useState(false);
 
     const [errorMessage, setErrorMessage] = useState('')
@@ -39,13 +39,13 @@ const Register = () => {
         console.log(result)
         console.log(password)
         setValidPassword(result)
-        const match = password === matchPassword
+        const match = password === confirmPassword
         setValidMatch(match)
-    }, [password, matchPassword]);
+    }, [password, confirmPassword]);
 
     useEffect(() => {
         setErrorMessage('')
-    }, [username, firstName, lastName, password, matchPassword]);
+    }, [username, firstName, lastName, password, confirmPassword]);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -55,7 +55,7 @@ const Register = () => {
         }
         try {
             const response = await api.post(REGISTER_URL,
-                JSON.stringify({firstName, lastName, username, password, matchPassword}),
+                JSON.stringify({firstName, lastName, username, password, matchPassword: confirmPassword}),
                 {
                     headers: {"Content-Type": 'application/json'},
                     withCredentials: true
@@ -69,6 +69,7 @@ const Register = () => {
                 setErrorMessage('Registration failed')
             }
         }
+        console.log(JSON.stringify({firstName, lastName, username, password, matchPassword: confirmPassword}))
     }
     return (
         <>
@@ -126,7 +127,7 @@ const Register = () => {
 
                 <TextField
                     type="password"
-                    onChange={(e) => setMatchPassword(e.target.value)}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                 />
                 <Typography variant="body2" className={!validMatch ? "visible" : "hidden"}>
