@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {Button, TextField, Typography} from "@mui/material";
 import api from "../api/axios.jsx";
+import {Link} from "react-router-dom";
 
 
 const USER_REGEX = /^[a-zA-Z0-9-_]{3,25}$/
@@ -142,10 +143,7 @@ const Register = () => {
             <Typography variant="body3">
                 Already registered?
             </Typography>
-            <span>
-                {/*put router link here*/}
-                <a href="#">Sign in</a>
-            </span>
+            <Link to="/login">Sign in</Link>
         </>
     )
 }

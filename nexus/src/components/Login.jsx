@@ -36,6 +36,7 @@ const Login = () => {
             setAuth({username, password, roles})
             setUsername('')
             setPassword('')
+            //TODO: add token
             navigate(from, {replace: true})
         } catch(err) {
             if(!err?.response)
@@ -69,14 +70,11 @@ const Login = () => {
                     value={password}
                 />
                 <Button type="submit">Sign in</Button>
-                <Typography variant="body3">
-                    Don't have an account?
-                </Typography>
-                <span>
-                {/*put router link here*/}
-                    <a href="#">Sign up</a>
-                </span>
             </form>
+            <Typography variant="body3">
+                Don't have an account?
+            </Typography>
+            <Link to="/register">Sign up</Link>
         </>
     )
 }
