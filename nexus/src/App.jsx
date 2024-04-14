@@ -1,5 +1,5 @@
-import Register from "./components/Register.jsx";
-import Login from "./components/Login.jsx";
+import Register from "./components/Auth/Register.jsx";
+import Login from "./components/Auth/Login.jsx";
 import {Routes, Route} from 'react-router-dom';
 import Layout from "./components/Layout.jsx";
 import RequireAuth from "./components/RequireAuth.jsx";

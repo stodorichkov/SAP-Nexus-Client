@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {Container, List, ListItem, Typography} from "@mui/material";
-import api from "../api/axios.jsx";
+import {auth} from "../api/axios.jsx";
 
 //TODO: display first name and last name not only username
 const Users = () => {
@@ -13,7 +13,7 @@ const Users = () => {
 
         const getUsers = async () => {
             try {
-                const response = await api.get('/users', {
+                const response = await auth.get('/users', {
                     signal: controller.signal
                 })
                 console.log(response.data)

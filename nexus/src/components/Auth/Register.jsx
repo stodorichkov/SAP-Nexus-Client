@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import {Button, TextField, Typography} from "@mui/material";
-import api from "../api/axios.jsx";
 import {Link} from "react-router-dom";
+import {auth} from "../../api/axios.jsx";
 
 
 const USER_REGEX = /^[a-zA-Z0-9-_]{3,25}$/
@@ -55,7 +55,7 @@ const Register = () => {
             return
         }
         try {
-            const response = await api.post(REGISTER_URL,
+            const response = await auth.post(REGISTER_URL,
                 JSON.stringify({firstName, lastName, username, password, matchPassword: confirmPassword}),
                 {
                     headers: {"Content-Type": 'application/json'},

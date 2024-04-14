@@ -1,7 +1,6 @@
 import axios from "axios";
+import {PathConstants} from "../conastants/PathConstants.js";
 
-const api = axios.create({
-    baseURL: 'http://localhost:8080'
-})
-
-export default api
+export const auth = axios.create({
+    baseURL: PathConstants.AUTH
+});
