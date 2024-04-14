@@ -7,5 +7,3 @@ export const PathConstants = {
     PROFILE: API_BASE_URL + '/profile',
     SALE: API_BASE_URL + '/sale'
 }
-
-

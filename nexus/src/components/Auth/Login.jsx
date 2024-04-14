@@ -26,18 +26,20 @@ const Login = () => {
             const response = await auth.post(LOGIN_URL, content);
             localStorage.setItem('token', response.data);
             navigate('/');
-        } catch(err) {
-            setErrorMessage(err.response.data);
+        } catch (err) {
+            setErrorMessage(err.response?.data);
         }
     }
 
     return (
         <>
+            <form onSubmit={signIn()}>
             <Typography variant="body3" className={errorMessage ? "visible" : "hidden"}>{errorMessage}</Typography>
             <Typography varinat="h1">Sign in</Typography>
             <TextField
                 type="text"
                 label="Username"
+                name="username"
                 onChange={e => setUsername(e.target.value)}
                 required
                 value={username}
@@ -45,15 +47,17 @@ const Login = () => {
             <TextField
                 type="password"
                 label="Password"
+                name="password"
                 onChange={e => setPassword(e.target.value)}
                 required
                 value={password}
             />
-            <Button type="submit" onClick={signIn}>Sign in</Button>
+            <Button type="submit">Sign in</Button>
             <Typography variant="body3">
                 Don't have an account?
             </Typography>
             <Link to="/register">Sign up</Link>
+            </form>
         </>
     )
 }

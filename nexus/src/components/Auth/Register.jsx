@@ -50,7 +50,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if(!USER_REGEX.test(username) || !PASSWORD_REGEX.test(password)) {
+        if (!USER_REGEX.test(username) || !PASSWORD_REGEX.test(password)) {
             setErrorMessage("Invalid entry")
             return
         }
@@ -64,7 +64,7 @@ const Register = () => {
             console.log(response.data)
             setSuccess(true)
         } catch (err) {
-            if(!err?.response) {
+            if (!err?.response) {
                 setErrorMessage("No server response")
             } else {
                 setErrorMessage('Registration failed')
@@ -76,7 +76,7 @@ const Register = () => {
         <>
             <Typography varinat="body3" className={errorMessage ? "visible" : "hidden"}>{errorMessage}</Typography>
             <Typography variant="h1">Register</Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit()}>
                 <TextField
                     type="text"
                     autoComplete="off"

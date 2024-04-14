@@ -18,7 +18,7 @@ const Users = () => {
                 })
                 console.log(response.data)
                 isMounted && setUsers(response.data)
-            } catch(err) {
+            } catch (err) {
                 console.log(err)
             }
         }
