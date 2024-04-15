@@ -6,10 +6,11 @@ import Unauthorized from "./components/Unauthorized.jsx";
 import Users from "./components/Users.jsx";
 import {jwtDecode} from "jwt-decode";
 import {RoleConstants} from "./conastants/RoleConstats.js";
+import {JwtConstants} from "./conastants/JwtConstats.js";
 
 const App = () => {
     const renderRoute = () => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem(JwtConstants.KEY);
         let routes = [];
 
         if (token) {
@@ -22,8 +23,8 @@ const App = () => {
             // Add routes for auth users
         } else {
             routes.push(
-                <Route path="/login" element={<Login/>}/>,
-                <Route path="/register" element={<Register/>}/>
+                <Route key="login" path="/login" element={<Login/>} />,
+                <Route key="register" path="/register" element={<Register/>} />
             );
         }
 
@@ -36,7 +37,7 @@ const App = () => {
             <Routes>
                 {/*Add Home route*/}
                 {renderRoute()}
-                <Route path="*" element={<Navigate to="/"/>}/>
+                <Route path="*" element={<Navigate to="/"/>} />
 
                 {/*<Route path="/unauthorized" element={<Unauthorized/>}/>*/}
 

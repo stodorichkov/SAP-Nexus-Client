@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {Button, TextField, Typography} from "@mui/material";
 import {Link, useNavigate} from 'react-router-dom';
 import {auth} from "../../api/axios.jsx";
+import {JwtConstants} from "../../conastants/JwtConstats.js";
 
 const LOGIN_URL = '/token'
 
@@ -24,7 +25,9 @@ const Login = () => {
 
         try {
             const response = await auth.post(LOGIN_URL, content);
-            localStorage.setItem('token', response.data);
+            const token = response.headers.getAuthorization().replace(JwtConstants.BEARER, '')
+            console.log(token)
+            localStorage.setItem(JwtConstants.KEY, token);
             navigate('/');
         } catch (err) {
             setErrorMessage(err.response?.data);
@@ -33,7 +36,6 @@ const Login = () => {
 
     return (
         <>
-            <form onSubmit={signIn()}>
             <Typography variant="body3" className={errorMessage ? "visible" : "hidden"}>{errorMessage}</Typography>
             <Typography varinat="h1">Sign in</Typography>
             <TextField
@@ -52,12 +54,11 @@ const Login = () => {
                 required
                 value={password}
             />
-            <Button type="submit">Sign in</Button>
+            <Button type="submit" onClick={signIn}>Sign in</Button>
             <Typography variant="body3">
                 Don't have an account?
             </Typography>
             <Link to="/register">Sign up</Link>
-            </form>
         </>
     )
 }
