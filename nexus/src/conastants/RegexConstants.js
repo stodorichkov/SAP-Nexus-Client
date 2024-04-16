@@ -1,4 +1,5 @@
 export const RegexConstants = {
-    USER_REGEX: /^[a-zA-Z0-9-_]{3,25}$/,
-    PASSWORD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/
+    USERNAME_REGEX: /^[a-zA-Z0-9_.-]{3,50}$/,
+    PASSWORD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+    NAME_REGEX: /^[A-Z][a-z]{2,30}$/
 }

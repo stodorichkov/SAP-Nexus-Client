@@ -11,12 +11,11 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPass, setShowPass] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleChangeUsername = (event) => {
-
         setUsername(event.target.value);
     }
     const handleChangePassword = (event) => {
@@ -50,7 +49,7 @@ const Login = () => {
     return (
         <form onSubmit={signIn}>
             <Grid container justifyContent='center' sx={{marginTop: '4vh'}}>
-                <Grid item xs={10} sm={7.5} md={6.5} lg={4.5} xl={3}>
+                <Grid item xs={10} sm={7.5} md={6.5} lg={4.5} xl={3.5}>
                     <Paper elevation={12} sx={{padding: '3.5rem'}}>
                         <Grid container spacing={4} justifyContent='center'>
                             <Grid item xs={12}>
