@@ -1,11 +1,9 @@
 import {useEffect, useRef, useState} from "react";
-import {Button, TextField, Typography} from "@mui/material";
+import {Button, Grid, Paper, TextField, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import {auth} from "../../api/axios.jsx";
+import {RegexConstants} from "../../conastants/RegexConstants.js";
 
-
-const USER_REGEX = /^[a-zA-Z0-9-_]{3,25}$/
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,}$/
 const REGISTER_URL = "/register"
 
 const Register = () => {
@@ -29,14 +27,14 @@ const Register = () => {
     const [success, setSuccess] = useState(false)
 
     useEffect(() => {
-        const result = USER_REGEX.test(username)
+        const result = RegexConstants.USER_REGEX.test(username)
         console.log(result)
         console.log(username)
         setValidUsername(result)
     }, [username]);
 
     useEffect(() => {
-        const result = PASSWORD_REGEX.test(password)
+        const result = RegexConstants.PASSWORD_REGEX.test(password)
         console.log(result)
         console.log(password)
         setValidPassword(result)
@@ -50,7 +48,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (!USER_REGEX.test(username) || !PASSWORD_REGEX.test(password)) {
+        if (!RegexConstants.USER_REGEX.test(username) || !RegexConstants.PASSWORD_REGEX.test(password)) {
             setErrorMessage("Invalid entry")
             return
         }
@@ -74,6 +72,130 @@ const Register = () => {
     }
     return (
         <>
+            <Grid container justifyContent='center' sx={{marginTop: '4vh'}}>
+                <Grid xs={10} sm={7.5} md={6.5} lg={4.5} xl={3.7}>
+                    <Paper elevation={12} sx={{padding: '3em',overflow: 'auto', maxHeight: {xl:'94vh', lg: '85vh'}}}>
+                        <Grid container spacing={3.5} justifyContent="center">
+                            <Grid xs={12}>
+                                <Typography variant="h3" color="textPrimary" align="center" >Sign Up</Typography>
+                            </Grid>
+                            <Grid xs={12}>
+                                <Divider sx={{backgroundColor: theme.palette.menu.main}}/>
+                            </Grid>
+                            {alert ? (
+                                <Grid xs={12}>
+                                    <Alert severity="error" variant="filled">{alert}</Alert>
+                                </Grid>
+                            ) : null}
+                            <Grid xs={12}>
+                                <TextField
+                                    fullWidth
+                                    label="Username"
+                                    value = {username}
+                                    onChange ={handleChangeUsername}
+                                />
+                            </Grid>
+                            <Grid xs={6}>
+                                <TextField
+                                    fullWidth
+                                    label="First name"
+                                    value = {firstName}
+                                    onChange ={handleChangeFirstName}
+                                />
+                            </Grid>
+                            <Grid xs={6}>
+                                <TextField
+                                    fullWidth
+                                    label="Last name"
+                                    value = {lastName}
+                                    onChange ={handleChangeLastName}
+                                />
+                            </Grid>
+                            <Grid xs={12}>
+                                <TextField
+                                    fullWidth
+                                    label="Email"
+                                    value = {email}
+                                    onChange ={handleChangeEmail}
+                                />
+                            </Grid>
+                            <Grid xs={9}>
+                                <TextField
+                                    fullWidth
+                                    label="Phone number"
+                                    value = {phone}
+                                    onChange ={handleChangePhone}
+                                />
+                            </Grid>
+                            <Grid xs={3}>
+                                <TextField
+                                    fullWidth
+                                    type="number"
+                                    InputProps={{
+                                        inputProps: {
+                                            max: 65, min: 18
+                                        }
+                                    }}
+                                    label="Age"
+                                    value = {age}
+                                    onChange ={handleChangeAge}
+                                />
+                            </Grid>
+                            <Grid xs={6}>
+                                <TextField
+                                    fullWidth
+                                    label="Password"
+                                    type={showPass ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={handleChangePassword}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={() => setShowPass(!showPass)} edge="end">
+                                                    {showPass ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid xs={6}>
+                                <TextField
+                                    fullWidth
+                                    label="Confirm password"
+                                    type={showConfPass ? 'text' : 'password'}
+                                    value = {confirmPassword}
+                                    onChange ={handleChangeConfirmPassword}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={() => setShowConfPass(!showConfPass)} edge="end">
+                                                    {showConfPass ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid>
+                                <Button variant="contained" size="large" color="button_secondary" onClick={addUser}>
+                                    Sign Up
+                                </Button>
+                            </Grid>
+                            <Grid xs={12}>
+                                <Divider sx={{backgroundColor: theme.palette.menu.main}}/>
+                            </Grid>
+                            <Grid xs={12}>
+                                <Typography variant="body2" align="center">
+                                    Already have an account? <Link onClick={() => navigate('/signin')}>Sign In</Link>
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+                </Grid>
+            </Grid>
             <Typography varinat="body3" className={errorMessage ? "visible" : "hidden"}>{errorMessage}</Typography>
             <Typography variant="h1">Register</Typography>
             <form onSubmit={handleSubmit()}>
