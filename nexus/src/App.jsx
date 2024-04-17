@@ -2,8 +2,8 @@ import Register from "./components/Auth/Register.jsx";
 import Login from "./components/Auth/Login.jsx";
 import {Routes, Route, BrowserRouter, Navigate} from 'react-router-dom';
 import {jwtDecode} from "jwt-decode";
-import {RoleConstants} from "./conastants/RoleConstats.js";
-import {JwtConstants} from "./conastants/JwtConstats.js";
+import {RoleConstants} from "./constants/RoleConstats.js";
+import {JwtConstants} from "./constants/JwtConstats.js";
 import NavBar from "./components/NavBar.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 

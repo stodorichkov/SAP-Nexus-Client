@@ -1,5 +1,5 @@
 import {profile} from "../../api/axios.jsx";
-import {JwtConstants} from "../../conastants/JwtConstats.js";
+import {JwtConstants} from "../../constants/JwtConstats.js";
 import {useCallback, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {
@@ -13,7 +13,7 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {MessageConstants} from "../../conastants/MessageConstants.js";
+import {MessageConstants} from "../../constants/MessageConstants.js";
 
 const TRANSFER_URL = "/money"
 
@@ -92,6 +92,16 @@ const Profile = () => {
         }
     }
 
+    const renderAlert = () => {
+        if(errorMessage) {
+            return (
+                <Grid item xs={12}>
+                    <Alert severity="error" variant="filled">{errorMessage}</Alert>
+                </Grid>
+            )
+        }
+    }
+
     const renderTransfer = () => {
         if(transferMode) {
             return (
@@ -148,11 +158,7 @@ const Profile = () => {
                         <Grid item xs={12}>
                             <Divider sx={{backgroundColor: '#000'}}/>
                         </Grid>
-                        {errorMessage ? (
-                            <Grid item xs={12}>
-                                <Alert severity="error" variant="filled">{errorMessage}</Alert>
-                            </Grid>
-                        ) : null}
+                        {renderAlert()}
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
@@ -199,63 +205,6 @@ const Profile = () => {
                             />
                         </Grid>
                         {renderTransfer()}
-                        {/*<Grid item xs={12}>*/}
-                        {/*    <TextField*/}
-                        {/*        fullWidth*/}
-                        {/*        required*/}
-                        {/*        error={validPassword.length !== 0}*/}
-                        {/*        helperText={validPassword}*/}
-                        {/*        label="Password"*/}
-                        {/*        type={showPass ? 'text' : 'password'}*/}
-                        {/*        value={password}*/}
-                        {/*        onChange={handleChangePassword}*/}
-                        {/*        InputProps={{*/}
-                        {/*            endAdornment: (*/}
-                        {/*                <InputAdornment position="end">*/}
-                        {/*                    <IconButton onClick={() => setShowPass(!showPass)} edge="end">*/}
-                        {/*                        {showPass ? <VisibilityOff/> : <Visibility/>}*/}
-                        {/*                    </IconButton>*/}
-                        {/*                </InputAdornment>*/}
-                        {/*            ),*/}
-                        {/*        }}*/}
-                        {/*        variant="outlined"*/}
-                        {/*    />*/}
-                        {/*</Grid>*/}
-                        {/*<Grid item xs={12}>*/}
-                        {/*    <TextField*/}
-                        {/*        fullWidth*/}
-                        {/*        required*/}
-                        {/*        error={validMatch.length !== 0}*/}
-                        {/*        helperText={validMatch}*/}
-                        {/*        label="Confirm password"*/}
-                        {/*        type={showConfPass ? 'text' : 'password'}*/}
-                        {/*        value={confirmPassword}*/}
-                        {/*        onChange={handleChangeConfirmPassword}*/}
-                        {/*        InputProps={{*/}
-                        {/*            endAdornment: (*/}
-                        {/*                <InputAdornment position="end">*/}
-                        {/*                    <IconButton onClick={() => setShowConfPass(!showConfPass)} edge="end">*/}
-                        {/*                        {showConfPass ? <VisibilityOff/> : <Visibility/>}*/}
-                        {/*                    </IconButton>*/}
-                        {/*                </InputAdornment>*/}
-                        {/*            ),*/}
-                        {/*        }}*/}
-                        {/*        variant="outlined"*/}
-                        {/*    />*/}
-                        {/*</Grid>*/}
-                        {/*<Grid item>*/}
-                        {/*    <Button type="submit" variant="contained" size="large" color="secondary">*/}
-                        {/*        Sign Up*/}
-                        {/*    </Button>*/}
-                        {/*</Grid>*/}
-                        {/*<Grid item xs={12}>*/}
-                        {/*    <Divider sx={{backgroundColor: '#000'}}/>*/}
-                        {/*</Grid>*/}
-                        {/*<Grid item xs={12}>*/}
-                        {/*    <Typography variant="body2" align="center">*/}
-                        {/*        Already have an account? <Link to="/login">Sign In</Link>*/}
-                        {/*    </Typography>*/}
-                        {/*</Grid>*/}
                     </Grid>
                 </Paper>
             </Grid>

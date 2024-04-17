@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Alert, Button, Divider, Grid, IconButton, InputAdornment, Paper, TextField, Typography} from "@mui/material";
 import {Link, useNavigate} from 'react-router-dom';
 import {auth} from "../../api/axios.jsx";
-import {JwtConstants} from "../../conastants/JwtConstats.js";
+import {JwtConstants} from "../../constants/JwtConstats.js";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 const LOGIN_URL = '/token'
@@ -46,6 +46,16 @@ const Login = () => {
         }
     }
 
+    const renderAlert = () => {
+        if(errorMessage) {
+            return (
+                <Grid item xs={12}>
+                    <Alert severity="error" variant="filled">{errorMessage}</Alert>
+                </Grid>
+            )
+        }
+    }
+
     return (
         <form onSubmit={signIn}>
             <Grid container justifyContent='center' sx={{marginTop: '4vh'}}>
@@ -58,11 +68,7 @@ const Login = () => {
                             <Grid item xs={12}>
                                 <Divider sx={{backgroundColor: "#000"}}/>
                             </Grid>
-                            {errorMessage ? (
-                                <Grid item xs={12}>
-                                    <Alert severity="error" variant="filled">{errorMessage}</Alert>
-                                </Grid>
-                            ) : null}
+                            {renderAlert()}
                             <Grid item xs={12}>
                                 <TextField
                                     fullWidth

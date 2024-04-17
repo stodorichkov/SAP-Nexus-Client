@@ -1,8 +1,8 @@
 import {AppBar, Toolbar, Button, Stack, Typography, Box, Avatar}  from '@mui/material';
 import {useNavigate} from "react-router-dom";
-import {JwtConstants} from "../conastants/JwtConstats.js";
+import {JwtConstants} from "../constants/JwtConstats.js";
 import {jwtDecode} from "jwt-decode";
-import {RoleConstants} from "../conastants/RoleConstats.js";
+import {RoleConstants} from "../constants/RoleConstats.js";
 
 const NavBar = () => {
     const navigate = useNavigate();
