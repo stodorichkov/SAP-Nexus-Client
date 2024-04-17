@@ -14,3 +14,10 @@ export const profile = axios.create({
         'Authorization': JwtConstants.BEARER + token
     }
 });
+
+export const admin = axios.create({
+    baseURL: PathConstants.ADMIN,
+    headers: {
+        'Authorization': JwtConstants.BEARER + token
+    }
+});

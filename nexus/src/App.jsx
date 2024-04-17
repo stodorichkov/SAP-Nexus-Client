@@ -6,6 +6,7 @@ import {RoleConstants} from "./constants/RoleConstats.js";
 import {JwtConstants} from "./constants/JwtConstats.js";
 import NavBar from "./components/NavBar.jsx";
 import Profile from "./components/Profile/Profile.jsx";
+import Admin from "./components/Admin/Admin.jsx";
 
 const App = () => {
     const renderRoutes = () => {
@@ -17,7 +18,7 @@ const App = () => {
 
             if(roles.includes(RoleConstants.ADMIN)) {
                 routes.push(
-                    <Route key="admin" path="/admin" />
+                    <Route key="admin" path="/admin" element={<Admin/>}/>
                 );
             }
 

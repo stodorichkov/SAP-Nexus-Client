@@ -31,14 +31,12 @@ const Profile = () => {
 
     const navigate = useNavigate();
 
-
     const handleChangeTransfer = (event) => {
         setTransfer(event.target.value);
     }
     const handleChangeTransferMode = () => {
         setTransferMode(!transferMode);
     }
-
 
     const getProfile = useCallback(async () => {
         try {
@@ -52,7 +50,7 @@ const Profile = () => {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
             }
-            console.log(err)
+            console.log(err);
         }
     }, []);
 
