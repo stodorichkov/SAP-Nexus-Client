@@ -72,6 +72,10 @@ const Register = () => {
     const signUp = async (e) => {
         e.preventDefault()
 
+        if(validUsername || validFirstName || validLastName || validPassword || validMatch) {
+            return;
+        }
+
         const content = {
             username: username,
             firstName: firstName,
@@ -86,7 +90,6 @@ const Register = () => {
         } catch (err) {
             setErrorMessage(err.response?.data);
         }
-        console.log(JSON.stringify({firstName, lastName, username, password, matchPassword: confirmPassword}))
     }
     return (
         <form onSubmit={signUp}>

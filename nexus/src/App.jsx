@@ -5,6 +5,7 @@ import {jwtDecode} from "jwt-decode";
 import {RoleConstants} from "./conastants/RoleConstats.js";
 import {JwtConstants} from "./conastants/JwtConstats.js";
 import NavBar from "./components/NavBar.jsx";
+import Profile from "./components/Profile/Profile.jsx";
 
 const App = () => {
     const renderRoutes = () => {
@@ -21,7 +22,7 @@ const App = () => {
             }
 
             routes.push(
-                <Route key="profile" path="/profile" />
+                <Route key="profile" path="/profile" element={<Profile/>} />
             );
         } else {
             routes.push(
