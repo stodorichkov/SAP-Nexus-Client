@@ -2,9 +2,9 @@ import {useEffect, useState} from "react";
 import {Alert, Button, Divider, Grid, IconButton, InputAdornment, Paper, TextField, Typography} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import {auth} from "../../api/axios.jsx";
-import {RegexConstants} from "../../conastants/RegexConstants.js";
+import {RegexConstants} from "../../constants/RegexConstants.js";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {MessageConstants} from "../../conastants/MessageConstants.js";
+import {MessageConstants} from "../../constants/MessageConstants.js";
 
 const REGISTER_URL = "/registration"
 
@@ -91,6 +91,17 @@ const Register = () => {
             setErrorMessage(err.response?.data);
         }
     }
+
+    const renderAlert = () => {
+        if(errorMessage) {
+            return (
+                <Grid item xs={12}>
+                    <Alert severity="error" variant="filled">{errorMessage}</Alert>
+                </Grid>
+            )
+        }
+    }
+
     return (
         <form onSubmit={signUp}>
             <Grid container justifyContent='center' sx={{marginTop: '4vh'}}>
@@ -103,11 +114,7 @@ const Register = () => {
                             <Grid item xs={12}>
                                 <Divider sx={{backgroundColor: '#000'}}/>
                             </Grid>
-                            {errorMessage ? (
-                                <Grid item xs={12}>
-                                    <Alert severity="error" variant="filled">{errorMessage}</Alert>
-                                </Grid>
-                            ) : null}
+                            {renderAlert()}
                             <Grid item xs={12}>
                                 <TextField
                                     fullWidth

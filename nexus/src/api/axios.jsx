@@ -1,6 +1,6 @@
 import axios from "axios";
-import {PathConstants} from "../conastants/PathConstants.js";
-import {JwtConstants} from "../conastants/JwtConstats.js";
+import {PathConstants} from "../constants/PathConstants.js";
+import {JwtConstants} from "../constants/JwtConstats.js";
 
 const token = localStorage.getItem(JwtConstants.KEY)
 
