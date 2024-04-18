@@ -7,6 +7,8 @@ import Users from "./components/Users.jsx";
 import {jwtDecode} from "jwt-decode";
 import {RoleConstants} from "./conastants/RoleConstats.js";
 import {JwtConstants} from "./conastants/JwtConstats.js";
+import Product from "./components/Product.jsx";
+import Products from "./components/Products.jsx";
 
 const App = () => {
     const renderRoute = () => {
@@ -21,6 +23,9 @@ const App = () => {
             }
 
             // Add routes for auth users
+            routes.push(
+                <Route key="products" path="/products" element={<Product/>}/>
+            )
         } else {
             routes.push(
                 <Route key="login" path="/login" element={<Login/>} />,

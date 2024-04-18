@@ -10,8 +10,6 @@ const REGISTER_URL = "/register"
 
 const Register = () => {
 
-    const errorRef = useRef()
-
     const [username, setUsername] = useState('')
     const [validUsername, setValidUsername] = useState(false)
 
