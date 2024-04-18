@@ -1,6 +1,6 @@
 import {profile} from "../../api/axios.jsx";
 import {JwtConstants} from "../../constants/JwtConstats.js";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {
     Alert,
@@ -8,7 +8,7 @@ import {
     Divider,
     Grid,
     InputAdornment,
-    Paper,
+    Paper, Snackbar,
     Stack,
     TextField,
     Typography
@@ -27,10 +27,10 @@ const Profile = () => {
 
     const [transferMode, setTransferMode] = useState(false);
     const [validTransfer, setValidTransfer] = useState('');
+    const [open, setOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
-
 
     const handleChangeTransfer = (event) => {
         setTransfer(event.target.value);
@@ -38,9 +38,29 @@ const Profile = () => {
     const handleChangeTransferMode = () => {
         setTransferMode(!transferMode);
     }
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
+        setOpen(false);
+    };
 
-    const getProfile = useCallback(async () => {
+    useEffect(() => {
+        getProfile().then(null);
+    }, );
+
+    useEffect(() => {
+        !isNaN(transfer) && transfer >= 0
+            ? setValidTransfer('')
+            : setValidTransfer(MessageConstants.INVALID_TRANSFER);
+    }, [transfer]);
+
+    useEffect(() => {
+        setTransfer(0);
+    }, [transferMode]);
+
+    const getProfile = async () => {
         try {
             const response = await profile.get('');
             setUsername(response.data.username);
@@ -52,23 +72,11 @@ const Profile = () => {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
             }
-            console.log(err)
+
+            setErrorMessage(err.response?.data);
+            setOpen(true);
         }
-    }, []);
-
-    useEffect(() => {
-        getProfile();
-    }, [getProfile]);
-
-    useEffect(() => {
-        !isNaN(transfer) && parseFloat(transfer) >= 0
-            ? setValidTransfer('')
-            : setValidTransfer(MessageConstants.INVALID_TRANSFER);
-    }, [transfer]);
-
-    useEffect(() => {
-        setTransfer(0);
-    }, [transferMode]);
+    };
 
     const transferMoney = async () => {
         if(validTransfer) {
@@ -80,7 +88,9 @@ const Profile = () => {
         }
         try {
              await profile.patch(TRANSFER_URL, content);
+
              setBalance(parseFloat(balance) + parseFloat(transfer));
+
              handleChangeTransferMode();
         } catch (err) {
             if(err.response.status === 401) {
@@ -89,52 +99,59 @@ const Profile = () => {
             }
 
             setErrorMessage(err.response?.data);
+            setOpen(true);
         }
     }
 
-    const renderAlert = () => {
-        if(errorMessage) {
-            return (
-                <Grid item xs={12}>
-                    <Alert severity="error" variant="filled">{errorMessage}</Alert>
-                </Grid>
-            )
-        }
+    const renderAlert  = () => {
+        return (
+            <Snackbar
+                open={open}
+                autoHideDuration={5000}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
+                onClose={handleClose}
+                sx={{marginTop: '5rem', maxWidth: '15%'}}
+            >
+                <Alert severity="error" variant="filled" onClose={handleClose}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+        )
     }
 
     const renderTransfer = () => {
         if(transferMode) {
             return (
-                    <>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                required
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position='end'>
-                                            NC
-                                        </InputAdornment>
-                                    ),
-                                }}
-                                error={validTransfer.length !== 0}
-                                helperText={validTransfer}
-                                label="Transfer"
-                                value={transfer}
-                                onChange={handleChangeTransfer}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Stack direction="row" justifyContent="center" spacing={3}>
-                                <Button variant="contained" size="large" color="success" onClick={transferMoney}>
-                                    Transfer
-                                </Button>
-                                <Button variant="contained" size="large" color="error" onClick={handleChangeTransferMode}>
-                                    Cancel
-                                </Button>
-                            </Stack>
-                        </Grid>
-                    </>
+                <>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            required
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position='end'>
+                                        NC
+                                    </InputAdornment>
+                                ),
+                            }}
+                            error={validTransfer.length !== 0}
+                            helperText={validTransfer}
+                            label="Transfer"
+                            value={transfer}
+                            onChange={handleChangeTransfer}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Stack direction="row" justifyContent="center" spacing={3}>
+                            <Button variant="contained" size="large" color="success" onClick={transferMoney}>
+                                Transfer
+                            </Button>
+                            <Button variant="contained" size="large" color="error" onClick={handleChangeTransferMode}>
+                                Cancel
+                            </Button>
+                        </Stack>
+                    </Grid>
+                </>
             )
         }
 
@@ -149,6 +166,7 @@ const Profile = () => {
 
     return (
         <Grid container justifyContent='center' sx={{marginTop: '4vh'}}>
+            {renderAlert()}
             <Grid item xs={10} sm={7.5} md={6.5} lg={4.5} xl={3.5}>
                 <Paper elevation={12} sx={{padding: '3em', overflow: 'auto', maxHeight: {xl: '94vh', lg: '85vh'}}}>
                     <Grid container spacing={2.5} justifyContent="center">

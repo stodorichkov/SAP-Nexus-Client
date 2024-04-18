@@ -5,9 +5,9 @@ import {auth} from "../../api/axios.jsx";
 import {JwtConstants} from "../../constants/JwtConstats.js";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 
-const LOGIN_URL = '/token'
-
 const Login = () => {
+    const LOGIN_URL = '/token'
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPass, setShowPass] = useState(false);
@@ -108,7 +108,7 @@ const Login = () => {
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography variant="body2" align="center">
-                                    Don't have an account? <Link to="/register">Sign Up</Link>
+                                    Don&apos;t have an account? <Link to="/register">Sign Up</Link>
                                 </Typography>
                             </Grid>
                         </Grid>

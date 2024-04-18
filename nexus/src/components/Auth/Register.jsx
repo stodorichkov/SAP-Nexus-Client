@@ -6,9 +6,9 @@ import {RegexConstants} from "../../constants/RegexConstants.js";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {MessageConstants} from "../../constants/MessageConstants.js";
 
-const REGISTER_URL = "/registration"
-
 const Register = () => {
+    const REGISTER_URL = "/registration"
+
     const [username, setUsername] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
