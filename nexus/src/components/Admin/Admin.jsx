@@ -12,8 +12,19 @@ const Admin = () => {
     return(
         <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext value={tab}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper'}}>
-                    <TabList onChange={handleChangeTab} centered>
+                <Box>
+                    <TabList
+                        onChange={handleChangeTab}
+                        centered
+                        textColor="inherit"
+                        indicatorColor="inherit"
+                        sx={{
+                            borderBottom: 1,
+                            borderColor: 'divider',
+                            bgcolor: '#444',
+                            color: '#fff'
+                        }}
+                    >
                         <Tab label="Users" value="1"/>
                         <Tab label="Products" value="2"/>
                         <Tab label="Campaigns" value="3"/>

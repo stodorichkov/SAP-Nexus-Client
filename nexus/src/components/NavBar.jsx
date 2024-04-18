@@ -55,7 +55,7 @@ const NavBar = () => {
     }
 
     return (
-        <AppBar position="static" color="primary" sx={{padding: '0.3rem', background: '#333333'}}>
+        <AppBar position="static" color="primary" sx={{padding: '0.3rem', background: '#333'}}>
             <Toolbar>
                 <Box display="flex" justifyContent="space-between" width="100%">
                     <Stack direction="row" spacing={1}>
