@@ -8,6 +8,9 @@ export const auth = axios.create({
     baseURL: PathConstants.AUTH
 });
 
+export const product = axios.create({
+    baseURL: PathConstants.PRODUCT
+})
 export const profile = axios.create({
     baseURL: PathConstants.PROFILE,
     headers: {

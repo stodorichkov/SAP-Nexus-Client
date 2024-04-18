@@ -6,6 +6,7 @@ import {RoleConstants} from "./constants/RoleConstats.js";
 import {JwtConstants} from "./constants/JwtConstats.js";
 import NavBar from "./components/NavBar.jsx";
 import Profile from "./components/Profile/Profile.jsx";
+import Product from "./components/Product.jsx";
 
 const App = () => {
     const renderRoutes = () => {
@@ -22,8 +23,9 @@ const App = () => {
             }
 
             routes.push(
-                <Route key="profile" path="/profile" element={<Profile/>} />
-            );
+                <Route key="profile" path="/profile" element={<Profile/>} />,
+                <Route key="products" path="/products" element={<Product/>} />
+            )
         } else {
             routes.push(
                 <Route key="login" path="/login" element={<Login/>} />,
