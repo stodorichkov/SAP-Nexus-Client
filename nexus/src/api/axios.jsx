@@ -8,15 +8,19 @@ export const auth = axios.create({
     baseURL: PathConstants.AUTH
 });
 
-export const profile = axios.create({
-    baseURL: PathConstants.PROFILE,
+export const admin = axios.create({
+    baseURL: PathConstants.ADMIN,
     headers: {
         'Authorization': JwtConstants.BEARER + token
     }
 });
 
-export const admin = axios.create({
-    baseURL: PathConstants.ADMIN,
+export const product = axios.create({
+    baseURL: PathConstants.PRODUCT
+});
+
+export const profile = axios.create({
+    baseURL: PathConstants.PROFILE,
     headers: {
         'Authorization': JwtConstants.BEARER + token
     }
