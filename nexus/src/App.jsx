@@ -1,17 +1,15 @@
 import Register from "./components/Auth/Register.jsx";
 import Login from "./components/Auth/Login.jsx";
 import {Routes, Route, BrowserRouter, Navigate} from 'react-router-dom';
-import RequireAuth from "./components/RequireAuth.jsx";
-import Unauthorized from "./components/Unauthorized.jsx";
-import Users from "./components/Users.jsx";
 import {jwtDecode} from "jwt-decode";
-import {RoleConstants} from "./conastants/RoleConstats.js";
-import {JwtConstants} from "./conastants/JwtConstats.js";
+import {RoleConstants} from "./constants/RoleConstats.js";
+import {JwtConstants} from "./constants/JwtConstats.js";
+import NavBar from "./components/NavBar.jsx";
+import Profile from "./components/Profile/Profile.jsx";
 import Product from "./components/Product.jsx";
-import Products from "./components/Products.jsx";
 
 const App = () => {
-    const renderRoute = () => {
+    const renderRoutes = () => {
         const token = localStorage.getItem(JwtConstants.KEY);
         let routes = [];
 
@@ -19,12 +17,14 @@ const App = () => {
             const roles = jwtDecode(token).roles;
 
             if(roles.includes(RoleConstants.ADMIN)) {
-                // Add admin route
+                routes.push(
+                    <Route key="admin" path="/admin" />
+                );
             }
 
-            // Add routes for auth users
             routes.push(
-                <Route key="products" path="/products" element={<Product/>}/>
+                <Route key="profile" path="/profile" element={<Profile/>} />,
+                <Route key="products" path="/products" element={<Product/>} />
             )
         } else {
             routes.push(
@@ -37,25 +37,21 @@ const App = () => {
     }
 
     return (
-        <BrowserRouter>
-            {/*Add nav bar route*/}
-            <Routes>
-                {/*Add Home route*/}
-                {renderRoute()}
-                <Route path="*" element={<Navigate to="/"/>} />
-
-                {/*<Route path="/unauthorized" element={<Unauthorized/>}/>*/}
-
-                {/*/!*TODO: add other public and protected routes*!/*/}
-                {/*<Route element={<RequireAuth allowedRoles={["user"]}/>}>*/}
-                {/*    <Route path="/users" element={<Users/>}/>*/}
-                {/*</Route>*/}
-                {/*<Route element={<RequireAuth allowedRoles={["admin"]}/>}>*/}
-                {/*    <></>*/}
-                {/*</Route>*/}
-
-            </Routes>
-        </BrowserRouter>
+        <div style={{
+            background: '#EFF4F9',
+            minHeight: '100vh',
+            overflow: 'hidden'
+        }}>
+            <BrowserRouter>
+                <NavBar/>
+                <Routes>
+                    {/*Add Home route*/}
+                    <Route path="/campaign"/>
+                    {renderRoutes()}
+                    <Route path="*" element={<Navigate to="/"/>}/>
+                </Routes>
+            </BrowserRouter>
+        </div>
     )
 }
 
