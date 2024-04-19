@@ -6,6 +6,5 @@ export const MessageConstants = {
         ' one uppercase letter and one lowercase letter!',
     PASSWORD_MISMATCH: 'Passwords do not match!',
     // profile
-    INVALID_TRANSFER: 'Transfer must be positive or zero!'
-
+    INVALID_TRANSFER: 'Transfer must be positive or zero!',
 }
