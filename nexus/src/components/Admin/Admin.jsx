@@ -2,6 +2,7 @@ import {Box, Tab} from "@mui/material";
 import {useState} from "react";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import Users from "./Users.jsx";
+import Sales from "./Sales.jsx";
 
 const Admin = () => {
     const [tab, setTab] = useState('1');
@@ -34,7 +35,7 @@ const Admin = () => {
                 <TabPanel value="1"><Users/></TabPanel>
                 <TabPanel value="2">Item Two</TabPanel>
                 <TabPanel value="3">Item Three</TabPanel>
-                <TabPanel value="4">Item Four</TabPanel>
+                <TabPanel value="4"><Sales/></TabPanel>
             </TabContext>
         </Box>
     )
