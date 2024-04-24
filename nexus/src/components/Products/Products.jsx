@@ -9,11 +9,11 @@ const Products = () => {
 
     let p = [
     {category: "Rackets", name: "Tennis racket", brand: "Adidas", description: "An adidas tennis racket, perfect for tennis", price: 6, discount: 10},
+    {category: "Arm bands", name: "Arm Band Pro", brand: "Nike", description: "A nike arm band", price: 1, discount: 40,},
     {category: "Arm bands", name: "Arm Band Pro", brand: "Nike", description: "A nike arm band", price: 1, discount: 50,},
     {category: "Arm bands", name: "Arm Band Pro", brand: "Nike", description: "A nike arm band", price: 1, discount: 50,},
     {category: "Arm bands", name: "Arm Band Pro", brand: "Nike", description: "A nike arm band", price: 1, discount: 50,},
-    {category: "Arm bands", name: "Arm Band Pro", brand: "Nike", description: "A nike arm band", price: 1, discount: 50,},
-    {category: "Arm bands", name: "Arm Band Pro", brand: "Nike", description: "A nike arm band", price: 1, discount: 50,},
+    {category: "Arm bands", name: "Arm Band Pro", brand: "Nike", description: "A nike arm band", price: 1, discount: 20,},
     {category: "Balls", name: "Tennis ball", brand: "Puma", description: "A tennis ball made by puma. A tennis ball made by puma.A tennis ball made by puma.", price: 2, discount: 0},
     ]
 

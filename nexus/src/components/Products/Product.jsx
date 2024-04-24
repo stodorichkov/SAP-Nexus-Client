@@ -37,10 +37,23 @@ const Product = ({product}) => {
             const response = await sale.post('/product/' + product.id)
             handleOpenSnackbar('Product purchased successfully', 'success')
         } catch(err) {
-            setMessageSnackbar(err.response?.data)
-            handleOpenSnackbar('Not enough money on your balance!', 'error')
+            handleOpenSnackbar(err.response?.data, 'error')
         }
     }
+
+    const renderPrice = () => {
+        if(product.discount === 0) {
+            return (<Typography variant="h6"> {product.price} NC</Typography>)
+        } else {
+
+            return (<>
+                  <Typography variant="h6" style={{textDecoration: 'line-through'}} color="text.secondary"> {product.price} NC </Typography>
+                  <Typography variant="h6"> {product.price - (product.discount/100) * product.price} NC</Typography>
+              </>
+          )
+        }
+    }
+
     return (
         <>
             <Snackbar
@@ -71,9 +84,7 @@ const Product = ({product}) => {
                     <Typography variant="h6">
                         {product.brand}
                     </Typography>
-                    <Typography variant="h6">
-                        {product.price}
-                    </Typography>
+                    {renderPrice()}
                 </CardContent>
                 <CardActions>
                     <Button size="small" variant="outlined" onClick={handleClickOpenDialog}>Details</Button>
