@@ -2,6 +2,7 @@ import {Alert, Button, Card, CardActions, CardContent, CardMedia, Snackbar, Typo
 import ProductDetailsDialog from "./ProductDetailsDialog.jsx";
 import React, {useState} from "react";
 import {sale} from "../../api/axios.jsx";
+import {useNavigate} from "react-router-dom";
 
 const Product = ({product}) => {
 
@@ -34,6 +35,7 @@ const Product = ({product}) => {
 
     const buyProduct = async () => {
         try {
+            //TODO: rerender parent component after buying a product, so the product list refereshes
             const response = await sale.post('/product/' + product.id)
             handleOpenSnackbar('Product purchased successfully', 'success')
         } catch(err) {
