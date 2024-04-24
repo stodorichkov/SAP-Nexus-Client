@@ -80,9 +80,8 @@ button:focus-visible {
     display: inline;
 }
 
-.grid {
-    width: 80%;
-    margin: 0 auto;
+.gridElement {
+    max-width: 10vw;
 }
 
 

@@ -1,9 +1,11 @@
 import Product from "./Product.jsx";
-import {Box, Grid} from "@mui/material";
-import {useEffect} from "react";
-import {product} from "../api/axios.jsx";
+import {Grid, Pagination, Stack} from "@mui/material";
+import {useEffect, useState} from "react";
+import {product} from "../../api/axios.jsx";
 
 const Products = () => {
+
+    const [productsList, setProductsList] = useState()
 
     let p = [
     {category: "Rackets", name: "Tennis racket", brand: "Adidas", description: "An adidas tennis racket, perfect for tennis", price: 6, discount: 10},
@@ -17,8 +19,8 @@ const Products = () => {
 
     const getProducts = async () => {
         try {
-            const response = await product.get('/products')
-            p = response.data
+            const response = await product.get('')
+            setProductsList(response.data)
         } catch(err) {
             console.log(err)
         }
@@ -29,20 +31,23 @@ const Products = () => {
     }, []);
 
 
-    const products = p.map(product => {
-        return (<Grid item xs={5}><Product category={product.category} name={product.name} brand={product.brand} description={product.description}
-                 price={product.price - (product.discount/100) * product.price}></Product>
+    // TODO: change this to productsList (p is for testing only)
+    const productsGrid = p.map(product => {
+        return (<Grid item><Product product={product}></Product>
                 </Grid>)
     })
 
     return(
-        <div className="grid">
-            <Box sx={{flexGrow: 1}} className="grid">
-                <Grid container spacing={2}>
-                    {products}
-                </Grid>
-            </Box>
-        </div>
+        <>
+            <Grid justifyContent="center" container spacing={3}>
+                {productsGrid}
+            </Grid>
+            <div style={{display: "flex", justifyContent: "center"}}>
+                <Stack spacing={2}>
+                    <Pagination count={10} variant="outlined" shape="rounded" />
+                </Stack>
+            </div>
+        </>
     )
 }
 
