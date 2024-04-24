@@ -7,7 +7,9 @@ import {JwtConstants} from "./constants/JwtConstats.js";
 import NavBar from "./components/NavBar.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 import Admin from "./components/Admin/Admin.jsx";
-import Product from "./components/Product.jsx";
+import Product from "./components/Products/Product.jsx";
+import Products from "./components/Products/Products.jsx";
+import ProductDetailsDialog from "./components/Products/ProductDetailsDialog.jsx";
 
 const App = () => {
     const renderRoutes = () => {
@@ -54,6 +56,7 @@ const App = () => {
             </BrowserRouter>
         </div>
     )
+
 }
 
 export default App;
