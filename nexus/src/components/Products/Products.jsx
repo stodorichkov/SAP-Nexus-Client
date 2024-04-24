@@ -1,10 +1,12 @@
 import Product from "./Product.jsx";
-import {Grid, Pagination, Stack} from "@mui/material";
+import {Button, Grid, List, ListItem, Pagination, Stack} from "@mui/material";
 import {useEffect, useState} from "react";
 import {product} from "../../api/axios.jsx";
 
 const Products = () => {
 
+    const [campaingsList, setCampaignsList] = useState()
+    const [campaignOnShow, setCampaignOnShow] = useState()
     const [productsList, setProductsList] = useState()
 
     let p = [
@@ -17,9 +19,26 @@ const Products = () => {
     {category: "Balls", name: "Tennis ball", brand: "Puma", description: "A tennis ball made by puma. A tennis ball made by puma.A tennis ball made by puma.", price: 2, discount: 0},
     ]
 
-    const getProducts = async () => {
+    let c = [
+        {name: 'Spring sale'},
+        {name: 'Black friday'},
+        {name: 'Easter sale'}
+
+    ]
+
+    const getCampaigns = async () => {
         try {
-            const response = await product.get('')
+            //TODO: change url to get only active campaigns
+            const response = await product.get('campaign')
+            setCampaignsList(response.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const getProducts = async (campaignName) => {
+        try {
+            const response = await product.get('' + campaignName)
             setProductsList(response.data)
         } catch(err) {
             console.log(err)
@@ -27,9 +46,21 @@ const Products = () => {
     }
 
     useEffect(() => {
-        getProducts()
+        getCampaigns().then(null)
+        getProducts('').then(null)
     }, []);
 
+    const handleCampaignChange = (campaignName) => {
+        setCampaignOnShow(campaignName)
+    }
+
+    const campaignsList = c.map(campaign => {
+        return (<ListItem style={{display: "inline"}}>
+                    <Button variant="contained" onClick={() => getProducts('/campaign/' + campaign.name)}>
+                        {campaign.name}
+                    </Button>
+            </ListItem>)
+    })
 
     // TODO: change this to productsList (p is for testing only)
     const productsGrid = p.map(product => {
@@ -39,9 +70,14 @@ const Products = () => {
 
     return(
         <>
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                <ListItem><Button onClick={() => getProducts('')}>All products</Button></ListItem>
+                {campaignsList}
+            </List>
             <Grid justifyContent="center" container spacing={3}>
                 {productsGrid}
             </Grid>
+            {/*TODO: add pagination functionality*/}
             <div style={{display: "flex", justifyContent: "center"}}>
                 <Stack spacing={2}>
                     <Pagination count={10} variant="outlined" shape="rounded" />
