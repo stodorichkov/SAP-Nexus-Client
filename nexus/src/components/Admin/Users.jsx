@@ -1,33 +1,32 @@
 import {useCallback, useEffect, useState} from "react";
 import {
-    Alert,
-    Button,
     Chip,
-    Container,
-    Paper, Snackbar, Stack,
+    Container, IconButton,
+    Paper, Stack,
     Table, TableBody,
     TableCell,
     TableContainer,
     TableHead, TablePagination,
-    TableRow,
+    TableRow, Tooltip,
 } from "@mui/material";
+import {AddModerator, RemoveModerator} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 import {admin} from "../../api/axios.jsx";
 import {JwtConstants} from "../../constants/JwtConstats.js";
 import {RoleConstants} from "../../constants/RoleConstats.js";
 
-const Users = () => {
+
+const Users = (props) => {
     const USERS_URL = '/users';
     const PROMOTE_URL = '/role/addition/';
     const DEMOTE_URL = '/role/removal/';
+
+    const handleError = props.handleError;
 
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [totalElements, setTotalElements] = useState(0);
-
-    const [open, setOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
 
@@ -38,13 +37,6 @@ const Users = () => {
         setPageSize(+event.target.value);
         setPage(0);
     }
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
 
     const getUsers = useCallback(async () => {
         const params = {
@@ -65,10 +57,9 @@ const Users = () => {
                 navigate(0);
             }
 
-            setErrorMessage(err.response?.data);
-            setOpen(true);
+            handleError(err.response?.data);
         }
-    }, [page, pageSize, navigate]);
+    }, [page, pageSize, handleError, navigate]);
 
     useEffect(() => {
         getUsers().then(null);
@@ -92,8 +83,7 @@ const Users = () => {
                 navigate(0);
             }
 
-            setErrorMessage(err.response?.data);
-            setOpen(true);
+            handleError(err.response?.data);
         }
     }
 
@@ -105,7 +95,7 @@ const Users = () => {
 
             const updatedUser = {
                 ...user,
-                roles: user.roles.filter(role => role !== RoleConstants.ADMIN)
+                roles: user.roles.filter(role => role.toString() !== RoleConstants.ADMIN)
             };
 
             setUsers(users.map(u => u.username === user.username ? updatedUser : u));
@@ -115,25 +105,8 @@ const Users = () => {
                 navigate(0);
             }
 
-            setErrorMessage(err.response?.data);
-            setOpen(true);
+            handleError(err.response?.data);
         }
-    }
-
-    const renderAlert  = () => {
-        return (
-            <Snackbar
-                open={open}
-                autoHideDuration={5000}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
-                onClose={handleClose}
-                sx={{marginTop: '5rem', maxWidth: '15%'}}
-            >
-                <Alert severity="error" variant="filled" onClose={handleClose}>
-                    {errorMessage}
-                </Alert>
-            </Snackbar>
-        )
     }
 
     const renderRoles = (roles) => {
@@ -149,41 +122,48 @@ const Users = () => {
     const renderButtons = (user) => {
         if (user.roles.includes(RoleConstants.ADMIN)) {
             return (
-                <Button key='demote' variant="contained" color="error" onClick={() => demote(user)}>
-                    Demote
-                </Button>
+                <Tooltip title="Demote user">
+                    <IconButton color="error" onClick={() => demote(user)}>
+                        <RemoveModerator/>
+                    </IconButton>
+                </Tooltip>
             );
         }
 
         return (
-            <Button key='demote' variant="contained" color="success" onClick={() => promote(user)}>
-                Promote
-            </Button>
+            <Tooltip title="Promote">
+                <IconButton color="success" onClick={() => promote(user)}>
+                    <AddModerator/>
+                </IconButton>
+            </Tooltip>
         );
     }
 
     const renderUsers = () => {
-        return users.map((user) => (
-            <TableRow
-                key={user.username}
-                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-            >
-                <TableCell sx={{fontWeight: "bold", width: '40%'}}>
-                    {user.username}
-                </TableCell>
-                <TableCell sx={{width: '40%'}}>
-                    {renderRoles(user.roles)}
-                </TableCell>
-                <TableCell sx={{width: '20%'}}>
-                    {renderButtons(user)}
-                </TableCell>
-            </TableRow>
-        ));
+        return(
+            <>
+                {users.map((user) => (
+                    <TableRow
+                        key={user.username}
+                    >
+                        <TableCell sx={{fontWeight: "bold", width: '40%'}}>
+                            {user.username}
+                        </TableCell>
+                        <TableCell sx={{width: '40%'}}>
+                            {renderRoles(user.roles)}
+                        </TableCell>
+                        <TableCell sx={{width: '20%'}}>
+                            {renderButtons(user)}
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </>
+
+        );
     }
 
     return (
         <Container maxWidth="md">
-            {renderAlert()}
             <Paper>
                 <TableContainer sx={{height: '38rem'}}>
                     <Table stickyHeader>
@@ -217,7 +197,7 @@ const Users = () => {
                 </Stack>
             </Paper>
         </Container>
-    )
+    );
 }
 
 export default Users

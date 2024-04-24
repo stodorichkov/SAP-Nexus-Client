@@ -1,14 +1,52 @@
-import {Box, Tab} from "@mui/material";
+import {Alert, Box, Snackbar, Tab} from "@mui/material";
 import {useState} from "react";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import Users from "./Users.jsx";
 import Sales from "./Sales.jsx";
+import Campaigns from "./Campaigns.jsx";
+import CampaignProducts from "./CampaignProducts.jsx";
 
 const Admin = () => {
-    const [tab, setTab] = useState('1');
+    const [tab, setTab] = useState('Users');
+    const [campaign, setCampaign] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const handleChangeTab = (event, newTab) => {
         setTab(newTab);
+        setOpen(false);
     };
+    const handleChangeCampaign= (newCampaign) => {
+        setCampaign(newCampaign);
+        setTab('Campaign products');
+    }
+    const handleError = (message) => {
+        setErrorMessage(message);
+        setOpen(true);
+    }
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    const renderAlert  = () => {
+        return (
+            <Snackbar
+                open={open}
+                autoHideDuration={5000}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
+                onClose={handleClose}
+                sx={{marginTop: '8rem', maxWidth: '15%'}}
+            >
+                <Alert severity="error" variant="filled" onClose={handleClose}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+        )
+    }
 
     return(
         <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -26,16 +64,32 @@ const Admin = () => {
                             color: '#fff'
                         }}
                     >
-                        <Tab label="Users" value="1"/>
-                        <Tab label="Products" value="2"/>
-                        <Tab label="Campaigns" value="3"/>
-                        <Tab label="Sales" value="4"/>
+                        <Tab label="Users" value="Users"/>
+                        <Tab label="Products" value="Products"/>
+                        <Tab label="Campaigns" value="Campaigns"/>
+                        <Tab label="Campaign products" value="Campaign products" disabled={campaign === null}/>
+                        <Tab label="Sales" value="Sales"/>
                     </TabList>
                 </Box>
-                <TabPanel value="1"><Users/></TabPanel>
-                <TabPanel value="2">Item Two</TabPanel>
-                <TabPanel value="3">Item Three</TabPanel>
-                <TabPanel value="4"><Sales/></TabPanel>
+                {renderAlert()}
+                <TabPanel value="Users">
+                    <Users handleError={handleError}/>
+                </TabPanel>
+                <TabPanel value="Products">
+                    Item Two
+                </TabPanel>
+                <TabPanel value="Campaigns">
+                    <Campaigns
+                        handleError={handleError}
+                        handleChangeCampaign={handleChangeCampaign}
+                    />
+                </TabPanel>
+                <TabPanel value="Campaign products">
+                    <CampaignProducts handleError={handleError} campaign={campaign}/>
+                </TabPanel>
+                <TabPanel value="Sales">
+                    <Sales handleError={handleError}/>
+                </TabPanel>
             </TabContext>
         </Box>
     )
