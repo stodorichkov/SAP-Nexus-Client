@@ -15,8 +15,8 @@ import {Delete, Edit} from "@mui/icons-material";
 import EditProductDiscount from "./EditProductDiscount.jsx";
 
 const CampaignProducts = (props) => {
-    const PRODUCTS_URL = '/campaign/';
-    const REMOVE_PRODUCT_URL = '/product/';
+    const PRODUCT_URL = '/product/';
+    const CAMPAIGN_REMOVE_URL = '/campaign/removal';
 
     // eslint-disable-next-line react/prop-types
     const campaign = props.campaign;
@@ -49,14 +49,14 @@ const CampaignProducts = (props) => {
     }
 
     const getProducts= useCallback(async () => {
-        const url = PRODUCTS_URL + campaign;
         const params = {
             page: page,
             size: pageSize,
+            campaign: campaign
         };
 
         try {
-            const response = await admin.get(url, {
+            const response = await admin.get(PRODUCT_URL, {
                 params: params
             });
 
@@ -77,7 +77,7 @@ const CampaignProducts = (props) => {
     }, [getProducts, editDiscount]);
 
     const removeProduct = async (product) => {
-        const url = REMOVE_PRODUCT_URL + product.id +'/campaign/removal';
+        const url = PRODUCT_URL + product.id + CAMPAIGN_REMOVE_URL;
 
         try {
             await admin.patch(url);
