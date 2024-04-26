@@ -3,8 +3,8 @@ import {useState} from "react";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
 import Users from "./Users.jsx";
 import Sales from "./Sales.jsx";
-import Campaigns from "./Campaigns.jsx";
-import CampaignProducts from "./CampaignProducts.jsx";
+import Campaigns from "./Campaign/Campaigns.jsx";
+import CampaignProducts from "./Campaign/CampaignProducts.jsx";
 
 const Admin = () => {
     const [tab, setTab] = useState('Users');

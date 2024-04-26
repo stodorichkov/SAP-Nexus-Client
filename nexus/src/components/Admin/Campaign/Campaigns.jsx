@@ -1,10 +1,10 @@
 import {useCallback, useEffect, useState} from "react";
-import {admin} from "../../api/axios.jsx";
-import {JwtConstants} from "../../constants/JwtConstats.js";
+import {admin} from "../../../api/axios.jsx";
+import {JwtConstants} from "../../../constants/JwtConstats.js";
 import {useNavigate} from "react-router-dom";
 import {
     Button,
-    Container, Fab, IconButton,
+    Container, Dialog, Fab, IconButton,
     Paper,
     Stack,
     Table, TableBody,
@@ -21,19 +21,23 @@ import {
     PlayCircle,
     StopCircle
 } from "@mui/icons-material";
+import AddCampaign from "./AddCampaign.jsx";
 
 const Campaigns = (props) => {
     const CAMPAIGNS_URL = '/campaigns';
     const CAMPAIGN_URL = '/campaign/';
     const dateFormat = 'DD/MM/YYYY';
 
+    // eslint-disable-next-line react/prop-types
     const handleError = props.handleError;
+    // eslint-disable-next-line react/prop-types
     const handleChangeCampaign = props.handleChangeCampaign;
 
     const [campaigns, setCampaigns] = useState([]);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [totalElements, setTotalElements] = useState(0);
+    const [add, setAdd] = useState(false);
 
     const navigate = useNavigate();
 
@@ -43,6 +47,9 @@ const Campaigns = (props) => {
     const handleChangePageSize = (event) => {
         setPageSize(+event.target.value);
         setPage(0);
+    }
+    const handleChangeAdd = () => {
+        setAdd(!add);
     }
 
     const getCampaigns = useCallback(async () => {
@@ -70,7 +77,7 @@ const Campaigns = (props) => {
 
     useEffect(() => {
         getCampaigns().then(null);
-    }, [getCampaigns]);
+    }, [getCampaigns, add]);
 
     const formatDate = (date) => {
         return dayjs(date).isValid() ? dayjs(date).format(dateFormat) : '-';
@@ -121,6 +128,8 @@ const Campaigns = (props) => {
             handleError(err.response?.data);
         }
     }
+
+
 
     const renderButtons = (campaign) => {
         const buttons = [];
@@ -236,9 +245,17 @@ const Campaigns = (props) => {
                     bottom: 16,
                     right: 16,
                 }}
+                onClick={handleChangeAdd}
             >
                 <Add />
             </Fab>
+            <Dialog
+                open={add}
+                maxWidth="xs"
+                fullWidth={true}
+            >
+                <AddCampaign handleClose={handleChangeAdd} handleError={handleError}/>
+            </Dialog>
         </Container>
     )
 }

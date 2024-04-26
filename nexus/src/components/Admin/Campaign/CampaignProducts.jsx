@@ -1,22 +1,24 @@
 import {
-    Container, Fab,
+    Container, IconButton,
     Paper, Stack,
     Table, TableBody,
     TableCell,
     TableContainer,
     TableHead, TablePagination,
-    TableRow, Typography
+    TableRow, Tooltip, Typography
 } from "@mui/material";
 import {useCallback, useEffect, useState} from "react";
-import AddIcon from "@mui/icons-material/Add.js";
-import {admin} from "../../api/axios.jsx";
-import {JwtConstants} from "../../constants/JwtConstats.js";
+import {admin} from "../../../api/axios.jsx";
+import {JwtConstants} from "../../../constants/JwtConstats.js";
 import {useNavigate} from "react-router-dom";
+import {Delete, Edit} from "@mui/icons-material";
 
 const CampaignProducts = (props) => {
     const PRODUCTS_URL = '/campaign/';
 
+    // eslint-disable-next-line react/prop-types
     const campaign = props.campaign;
+    // eslint-disable-next-line react/prop-types
     const handleError = props.handleError;
 
     const [products, setProducts] = useState([]);
@@ -46,8 +48,6 @@ const CampaignProducts = (props) => {
                 params: params
             });
 
-            console.log(response)
-
             setProducts(response.data.content);
             setTotalElements(response.data.totalElements);
         } catch (err) {
@@ -58,11 +58,38 @@ const CampaignProducts = (props) => {
 
             handleError(err.response?.data);
         }
-    }, [page, pageSize, handleError, navigate]);
+    }, [page, pageSize, handleError, navigate, campaign]);
 
     useEffect(() => {
         getProducts().then(null);
     }, [getProducts]);
+
+    const renderButtons = (product) => {
+        const buttons = [];
+
+        buttons.push(
+            <Tooltip title="Edit product discount" key="edit">
+                <IconButton>
+                    <Edit/>
+                </IconButton>
+            </Tooltip>,
+            <Tooltip title="Remove product" key="remove">
+                <IconButton color="error" >
+                    <Delete/>
+                </IconButton>
+            </Tooltip>
+        );
+
+        return(
+            <Stack
+                direction="row"
+                spacing={1}
+            >
+                {buttons}
+            </Stack>
+        );
+
+    }
 
     const renderProducts = () => {
         return (
@@ -74,23 +101,26 @@ const CampaignProducts = (props) => {
                         <TableCell sx={{fontWeight: "bold", width: '5%'}}>
                             {product.id}
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{width: '20%'}}>
                             {product.name}
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{width: '20%'}}>
                             {product.brand}
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{width: '20%'}}>
                             {product.category}
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{width: '5%'}}>
                             {product.availability}
                         </TableCell>
-                        <TableCell>
-                            {product.price}
+                        <TableCell sx={{width: '10%'}}>
+                            {product.price.toFixed(2)}
+                        </TableCell>
+                        <TableCell sx={{width: '5%'}}>
+                            {product.campaignDiscount}
                         </TableCell>
                         <TableCell>
-                            {product.campaignDiscount}
+                            {renderButtons(product)}
                         </TableCell>
                     </TableRow>
                 ))}
@@ -146,19 +176,8 @@ const CampaignProducts = (props) => {
                     </Stack>
                 </Stack>
             </Paper>
-            <Fab
-                color="primary"
-                aria-label="add"
-                sx={{
-                    position: 'absolute',
-                    bottom: 16,
-                    right: 16,
-                }}
-            >
-                <AddIcon />
-            </Fab>
         </Container>
-    )
+    );
 }
 
 export default CampaignProducts;

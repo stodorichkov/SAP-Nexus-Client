@@ -70,8 +70,8 @@ const Register = () => {
         setErrorMessage('');
     }, [username, firstName, lastName, password, confirmPassword]);
 
-    const signUp = async (e) => {
-        e.preventDefault()
+    const signUp = async (event) => {
+        event.preventDefault()
 
         if(validUsername || validFirstName || validLastName || validPassword || validMatch) {
             return;

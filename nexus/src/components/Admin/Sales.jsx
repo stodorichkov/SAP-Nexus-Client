@@ -19,6 +19,7 @@ const Sales = (props) => {
     const TURNOVER_URL = '/turnover';
     const dateFormat = 'YYYY-MM-DD';
 
+    // eslint-disable-next-line react/prop-types
     const handleError = props.handleError;
 
     const [startDate, setStartDate] = useState(dayjs());
@@ -27,12 +28,12 @@ const Sales = (props) => {
 
     const navigate = useNavigate();
 
-    const handleStartDateChange = (date) => {
+    const handleChangeStartDate = (date) => {
         setStartDate(date);
         setEndDate(date);
     };
-    const handleEndDateChange = (date) => {
-        setEndDate(date.format(dateFormat));
+    const handleChangeEndDate = (date) => {
+        setEndDate(date);
     };
 
     const calculateTurnover = async () => {
@@ -69,7 +70,7 @@ const Sales = (props) => {
                                         label="Start date"
                                         format="DD/MM/YYYY"
                                         value={startDate}
-                                        onChange={handleStartDateChange}
+                                        onChange={handleChangeStartDate}
                                         maxDate={dayjs()}
                                     />
                                 </LocalizationProvider>
@@ -80,7 +81,7 @@ const Sales = (props) => {
                                         label="End date"
                                         format="DD/MM/YYYY"
                                         value={startDate}
-                                        onChange={handleEndDateChange}
+                                        onChange={handleChangeEndDate}
                                         minDate={startDate}
                                         maxDate={dayjs()}
                                     />
