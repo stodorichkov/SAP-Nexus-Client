@@ -25,3 +25,10 @@ export const profile = axios.create({
         'Authorization': JwtConstants.BEARER + token
     }
 });
+
+export const sale = axios.create({
+    baseURL: PathConstants.SALE,
+    headers: {
+        'Authorization': JwtConstants.BEARER + token
+    }
+})
