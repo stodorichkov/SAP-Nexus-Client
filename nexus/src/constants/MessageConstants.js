@@ -7,4 +7,6 @@ export const MessageConstants = {
     PASSWORD_MISMATCH: 'Passwords do not match!',
     // profile
     INVALID_TRANSFER: 'Transfer must be positive or zero!',
+    // campaign
+    INVALID_DISCOUNT: 'Discount must be between 0 and 100',
 }
