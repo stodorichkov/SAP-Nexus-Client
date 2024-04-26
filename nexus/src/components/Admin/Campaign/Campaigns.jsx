@@ -4,7 +4,7 @@ import {JwtConstants} from "../../../constants/JwtConstats.js";
 import {useNavigate} from "react-router-dom";
 import {
     Button,
-    Container, Dialog, Fab, IconButton,
+    Container, Fab, IconButton,
     Paper,
     Stack,
     Table, TableBody,
@@ -22,6 +22,7 @@ import {
     StopCircle
 } from "@mui/icons-material";
 import AddCampaign from "./AddCampaign.jsx";
+import EditCampaign from "./EditCapaign.jsx";
 
 const Campaigns = (props) => {
     const CAMPAIGNS_URL = '/campaigns';
@@ -38,6 +39,8 @@ const Campaigns = (props) => {
     const [pageSize, setPageSize] = useState(5);
     const [totalElements, setTotalElements] = useState(0);
     const [add, setAdd] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [campaign, setCampaign] = useState(null);
 
     const navigate = useNavigate();
 
@@ -48,8 +51,15 @@ const Campaigns = (props) => {
         setPageSize(+event.target.value);
         setPage(0);
     }
-    const handleChangeAdd = () => {
-        setAdd(!add);
+    const handleOpenAdd = () => setAdd(true);
+    const handleCloseAdd = () => setAdd(false);
+    const handleOpenEdit = (campaign) => {
+        setCampaign(campaign);
+        setEdit(true);
+    }
+    const handleCloseEdit = () => {
+        setCampaign(null);
+        setEdit(false);
     }
 
     const getCampaigns = useCallback(async () => {
@@ -77,7 +87,7 @@ const Campaigns = (props) => {
 
     useEffect(() => {
         getCampaigns().then(null);
-    }, [getCampaigns, add]);
+    }, [getCampaigns, add, edit]);
 
     const formatDate = (date) => {
         return dayjs(date).isValid() ? dayjs(date).format(dateFormat) : '-';
@@ -154,7 +164,7 @@ const Campaigns = (props) => {
 
         buttons.push(
             <Tooltip title="Edit" key="edit">
-                <IconButton>
+                <IconButton onClick={() => handleOpenEdit(campaign)}>
                     <Edit/>
                 </IconButton>
             </Tooltip>
@@ -245,17 +255,12 @@ const Campaigns = (props) => {
                     bottom: 16,
                     right: 16,
                 }}
-                onClick={handleChangeAdd}
+                onClick={handleOpenAdd}
             >
                 <Add />
             </Fab>
-            <Dialog
-                open={add}
-                maxWidth="xs"
-                fullWidth={true}
-            >
-                <AddCampaign handleClose={handleChangeAdd} handleError={handleError}/>
-            </Dialog>
+            <AddCampaign open={add} handleClose={handleCloseAdd} handleError={handleError}/>
+            <EditCampaign campaign={campaign} open={edit} handleClose={handleCloseEdit} handleError={handleError}/>
         </Container>
     )
 }

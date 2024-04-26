@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import dayjs from "dayjs";
 import {
     Button, Dialog,
@@ -17,8 +17,8 @@ import {admin} from "../../../api/axios.jsx";
 import {useNavigate} from "react-router-dom";
 import {JwtConstants} from "../../../constants/JwtConstats.js";
 
-const AddCampaign = (props) => {
-    const ADD_URL = '/campaign';
+const EditCampaign = (props) => {
+    const EDIT_URL = '/campaign';
     const dateFormat = 'YYYY-MM-DD';
 
     // eslint-disable-next-line react/prop-types
@@ -27,6 +27,8 @@ const AddCampaign = (props) => {
     const handleClose = props.handleClose;
     // eslint-disable-next-line react/prop-types
     const open = props.open
+    // eslint-disable-next-line react/prop-types
+    const campaign = props.campaign
 
     const [name, setName] = useState('');
     const [startDate, setStartDate] = useState(dayjs());
@@ -45,7 +47,19 @@ const AddCampaign = (props) => {
         setEndDate(date);
     };
 
-    const addCampaign = async (event) => {
+    useEffect(() => {
+        if (campaign) {
+            setName(campaign.name);
+            setStartDate(formatDate(campaign.startDate));
+            setEndDate(formatDate(campaign.endDate));
+        }
+    }, [campaign]);
+
+    const formatDate = (date) => {
+        return dayjs(date).isValid() ? dayjs(date) : dayjs();
+    }
+
+    const editCampaign = async (event) => {
         event.preventDefault();
 
         const content = {
@@ -55,7 +69,7 @@ const AddCampaign = (props) => {
         };
 
         try {
-            await admin.post(ADD_URL, content);
+            await admin.patch(EDIT_URL, content);
 
             handleClose();
         } catch (err) {
@@ -80,10 +94,10 @@ const AddCampaign = (props) => {
                 </IconButton>
             </DialogTitle>
             <DialogContent>
-                <form onSubmit={addCampaign}>
+                <form onSubmit={editCampaign}>
                     <Grid container spacing={4} justifyContent='center'>
                         <Grid item xs={12}>
-                            <Typography variant="h4" color="textPrimary" align="center">Add campaign</Typography>
+                            <Typography variant="h4" color="textPrimary" align="center">Edit campaign</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Divider sx={{backgroundColor: "#000"}}/>
@@ -123,7 +137,7 @@ const AddCampaign = (props) => {
                         </Grid>
                         <Grid item>
                             <Button type='submit' variant="contained" size="large" color="primary">
-                                Add
+                                Edit
                             </Button>
                         </Grid>
                     </Grid>
@@ -133,4 +147,4 @@ const AddCampaign = (props) => {
     );
 }
 
-export default AddCampaign;
+export default EditCampaign;
