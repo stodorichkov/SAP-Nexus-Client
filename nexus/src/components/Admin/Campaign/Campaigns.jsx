@@ -87,7 +87,7 @@ const Campaigns = (props) => {
 
     useEffect(() => {
         getCampaigns().then(null);
-    }, [getCampaigns, add, edit]);
+    }, [getCampaigns, add, edit,]);
 
     const formatDate = (date) => {
         return dayjs(date).isValid() ? dayjs(date).format(dateFormat) : '-';
@@ -99,12 +99,7 @@ const Campaigns = (props) => {
         try {
             await admin.patch(url);
 
-            const updatedCampaign = {
-                ...campaign,
-                isActive: true
-            };
-
-            setCampaigns(campaigns.map(c => c.name === campaign.name ? updatedCampaign : c));
+            getCampaigns().then(null);
         } catch (err) {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
@@ -121,14 +116,7 @@ const Campaigns = (props) => {
         try {
             await admin.patch(url);
 
-            const updatedCampaign = {
-                ...campaign,
-                isActive: false,
-                startDate: '-',
-                endDate: '-'
-            };
-
-            setCampaigns(campaigns.map(c => c.name === campaign.name ? updatedCampaign : c));
+            getCampaigns().then(null);
         } catch (err) {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
@@ -138,8 +126,6 @@ const Campaigns = (props) => {
             handleError(err.response?.data);
         }
     }
-
-
 
     const renderButtons = (campaign) => {
         const buttons = [];

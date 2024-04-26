@@ -11,8 +11,8 @@ import { MobileDatePicker, LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {useState} from "react";
 import dayjs from 'dayjs';
-import {admin} from "../../api/axios.jsx";
-import {JwtConstants} from "../../constants/JwtConstats.js";
+import {admin} from "../../../api/axios.jsx";
+import {JwtConstants} from "../../../constants/JwtConstats.js";
 import {useNavigate} from "react-router-dom";
 
 const Sales = (props) => {

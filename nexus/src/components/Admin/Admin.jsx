@@ -1,8 +1,8 @@
 import {Alert, Box, Snackbar, Tab} from "@mui/material";
 import {useState} from "react";
 import {TabContext, TabList, TabPanel} from "@mui/lab";
-import Users from "./Users.jsx";
-import Sales from "./Sales.jsx";
+import Users from "./User/Users.jsx";
+import Sales from "./Sale/Sales.jsx";
 import Campaigns from "./Campaign/Campaigns.jsx";
 import CampaignProducts from "./Campaign/CampaignProducts.jsx";
 

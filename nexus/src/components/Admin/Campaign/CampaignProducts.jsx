@@ -12,9 +12,11 @@ import {admin} from "../../../api/axios.jsx";
 import {JwtConstants} from "../../../constants/JwtConstats.js";
 import {useNavigate} from "react-router-dom";
 import {Delete, Edit} from "@mui/icons-material";
+import EditProductDiscount from "./EditProductDiscount.jsx";
 
 const CampaignProducts = (props) => {
     const PRODUCTS_URL = '/campaign/';
+    const REMOVE_PRODUCT_URL = '/product/';
 
     // eslint-disable-next-line react/prop-types
     const campaign = props.campaign;
@@ -25,6 +27,8 @@ const CampaignProducts = (props) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [totalElements, setTotalElements] = useState(0);
+    const [editDiscount, setEditDiscount] = useState(false);
+    const [product, setProduct] = useState(null);
 
     const navigate = useNavigate();
 
@@ -34,6 +38,14 @@ const CampaignProducts = (props) => {
     const handleChangePageSize = (event) => {
         setPageSize(+event.target.value);
         setPage(0);
+    }
+    const handleOpenEditDiscount = (product) => {
+        setProduct(product);
+        setEditDiscount(true);
+    }
+    const handleCloseEditDiscount = () => {
+        setProduct(null);
+        setEditDiscount(false);
     }
 
     const getProducts= useCallback(async () => {
@@ -62,19 +74,36 @@ const CampaignProducts = (props) => {
 
     useEffect(() => {
         getProducts().then(null);
-    }, [getProducts]);
+    }, [getProducts, editDiscount]);
+
+    const removeProduct = async (product) => {
+        const url = REMOVE_PRODUCT_URL + product.id +'/campaign/removal';
+
+        try {
+            await admin.patch(url);
+
+            getProducts().then(null);
+        } catch (err) {
+            if (err.response.status === 401) {
+                localStorage.removeItem(JwtConstants.KEY);
+                navigate(0);
+            }
+
+            handleError(err.response?.data);
+        }
+    }
 
     const renderButtons = (product) => {
         const buttons = [];
 
         buttons.push(
             <Tooltip title="Edit product discount" key="edit">
-                <IconButton>
+                <IconButton onClick={() => handleOpenEditDiscount(product)}>
                     <Edit/>
                 </IconButton>
             </Tooltip>,
             <Tooltip title="Remove product" key="remove">
-                <IconButton color="error" >
+                <IconButton color="error" onClick={() => removeProduct(product)}>
                     <Delete/>
                 </IconButton>
             </Tooltip>
@@ -98,7 +127,7 @@ const CampaignProducts = (props) => {
                     <TableRow
                         key={product.id}
                     >
-                        <TableCell sx={{fontWeight: "bold", width: '5%'}}>
+                        <TableCell sx={{fontWeight: "bold", width: '1%'}}>
                             {product.id}
                         </TableCell>
                         <TableCell sx={{width: '20%'}}>
@@ -114,10 +143,13 @@ const CampaignProducts = (props) => {
                             {product.availability}
                         </TableCell>
                         <TableCell sx={{width: '10%'}}>
-                            {product.price.toFixed(2)}
+                            {product.price.toFixed(2) + " NC"}
+                        </TableCell>
+                        <TableCell sx={{width: '10%'}}>
+                            {product.minPrice.toFixed(2) + " NC"}
                         </TableCell>
                         <TableCell sx={{width: '5%'}}>
-                            {product.campaignDiscount}
+                            {product.campaignDiscount + " %"}
                         </TableCell>
                         <TableCell>
                             {renderButtons(product)}
@@ -154,6 +186,7 @@ const CampaignProducts = (props) => {
                                     <TableCell>Category</TableCell>
                                     <TableCell>Availability</TableCell>
                                     <TableCell>Price</TableCell>
+                                    <TableCell>Min Price</TableCell>
                                     <TableCell>Discount</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
@@ -176,6 +209,12 @@ const CampaignProducts = (props) => {
                     </Stack>
                 </Stack>
             </Paper>
+            <EditProductDiscount
+                product={product}
+                open={editDiscount}
+                handleClose={handleCloseEditDiscount}
+                handleError={handleError}
+            />
         </Container>
     );
 }

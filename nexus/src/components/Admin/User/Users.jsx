@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import {AddModerator, RemoveModerator} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
-import {admin} from "../../api/axios.jsx";
-import {JwtConstants} from "../../constants/JwtConstats.js";
-import {RoleConstants} from "../../constants/RoleConstats.js";
+import {admin} from "../../../api/axios.jsx";
+import {JwtConstants} from "../../../constants/JwtConstats.js";
+import {RoleConstants} from "../../../constants/RoleConstats.js";
 
 
 const Users = (props) => {
@@ -21,6 +21,7 @@ const Users = (props) => {
     const PROMOTE_URL = '/role/addition/';
     const DEMOTE_URL = '/role/removal/';
 
+    // eslint-disable-next-line react/prop-types
     const handleError = props.handleError;
 
     const [users, setUsers] = useState([]);
@@ -71,12 +72,7 @@ const Users = (props) => {
         try {
             await admin.patch(url);
 
-            const updatedUser = {
-                ...user,
-                roles: [...user.roles, RoleConstants.ADMIN]
-            };
-
-            setUsers(users.map(u => u.username === user.username ? updatedUser : u));
+            getUsers().then(null);
         } catch (err) {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
@@ -93,12 +89,7 @@ const Users = (props) => {
         try {
             await admin.patch(url);
 
-            const updatedUser = {
-                ...user,
-                roles: user.roles.filter(role => role.toString() !== RoleConstants.ADMIN)
-            };
-
-            setUsers(users.map(u => u.username === user.username ? updatedUser : u));
+            getUsers().then(null);
         } catch (err) {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
