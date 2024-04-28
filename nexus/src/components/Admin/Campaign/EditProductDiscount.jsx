@@ -42,15 +42,19 @@ const EditProductDiscount = (props) => {
 
     useEffect(() => {
         if (product) {
+            // eslint-disable-next-line react/prop-types
             setDiscount(product.campaignDiscount);
+            // eslint-disable-next-line react/prop-types
             setId(product.id);
+            // eslint-disable-next-line react/prop-types
             setPrice(product.price);
+            // eslint-disable-next-line react/prop-types
             setMinPrice(product.minPrice);
         }
     }, [product]);
 
     useEffect(() => {
-        !isNaN(discount) && discount >= 0 && discount <= 100
+        parseInt(discount) >= 0 && parseInt(discount) <= 100
             ? setValidDiscount('')
             : setValidDiscount(MessageConstants.INVALID_DISCOUNT);
     }, [discount]);
@@ -62,6 +66,7 @@ const EditProductDiscount = (props) => {
             return;
         }
 
+        // eslint-disable-next-line react/prop-types
         const url = EDIT_DISCOUNT_URL + product.id + '/campaignDiscount';
 
         const content = {
@@ -76,9 +81,9 @@ const EditProductDiscount = (props) => {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }
 
@@ -112,7 +117,7 @@ const EditProductDiscount = (props) => {
                                 value={id}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 fullWidth
                                 InputProps={{
@@ -127,7 +132,7 @@ const EditProductDiscount = (props) => {
                                 value={parseFloat(price).toFixed(2)}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 fullWidth
                                 InputProps={{
@@ -149,6 +154,13 @@ const EditProductDiscount = (props) => {
                             <TextField
                                 fullWidth
                                 required
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position='end'>
+                                            %
+                                        </InputAdornment>
+                                    ),
+                                }}
                                 error={validDiscount.length !== 0}
                                 helperText={validDiscount}
                                 label="Discount"

@@ -15,7 +15,7 @@ import {Delete, Edit} from "@mui/icons-material";
 import EditProductDiscount from "./EditProductDiscount.jsx";
 
 const CampaignProducts = (props) => {
-    const PRODUCT_URL = '/product/';
+    const PRODUCT_URL = '/product';
     const CAMPAIGN_REMOVE_URL = '/campaign/removal';
 
     // eslint-disable-next-line react/prop-types
@@ -66,9 +66,9 @@ const CampaignProducts = (props) => {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }, [page, pageSize, handleError, navigate, campaign]);
 
@@ -77,7 +77,7 @@ const CampaignProducts = (props) => {
     }, [getProducts, editDiscount]);
 
     const removeProduct = async (product) => {
-        const url = PRODUCT_URL + product.id + CAMPAIGN_REMOVE_URL;
+        const url = PRODUCT_URL + "/" + product.id + CAMPAIGN_REMOVE_URL;
 
         try {
             await admin.patch(url);
@@ -87,9 +87,9 @@ const CampaignProducts = (props) => {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }
 
@@ -130,13 +130,13 @@ const CampaignProducts = (props) => {
                         <TableCell sx={{fontWeight: "bold", width: '1%'}}>
                             {product.id}
                         </TableCell>
-                        <TableCell sx={{width: '20%'}}>
+                        <TableCell sx={{minWidth: 170}}>
                             {product.name}
                         </TableCell>
-                        <TableCell sx={{width: '20%'}}>
+                        <TableCell sx={{minWidth: 170}}>
                             {product.brand}
                         </TableCell>
-                        <TableCell sx={{width: '20%'}}>
+                        <TableCell sx={{minWidth: 170}}>
                             {product.category}
                         </TableCell>
                         <TableCell sx={{width: '5%'}}>

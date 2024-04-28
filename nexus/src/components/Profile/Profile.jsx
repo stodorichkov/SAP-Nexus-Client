@@ -1,6 +1,6 @@
 import {profile} from "../../api/axios.jsx";
 import {JwtConstants} from "../../constants/JwtConstats.js";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {
     Alert,
@@ -46,21 +46,7 @@ const Profile = () => {
         setOpen(false);
     };
 
-    useEffect(() => {
-        getProfile().then(null);
-    }, );
-
-    useEffect(() => {
-        !isNaN(transfer) && transfer >= 0
-            ? setValidTransfer('')
-            : setValidTransfer(MessageConstants.INVALID_TRANSFER);
-    }, [transfer]);
-
-    useEffect(() => {
-        setTransfer(0);
-    }, [transferMode]);
-
-    const getProfile = async () => {
+    const getProfile = useCallback( async () => {
         try {
             const response = await profile.get('');
             setUsername(response.data.username);
@@ -76,7 +62,23 @@ const Profile = () => {
             setErrorMessage(err.response?.data);
             setOpen(true);
         }
-    };
+    }, [navigate]);
+
+    useEffect(() => {
+        getProfile().then(null);
+    },[getProfile]);
+
+    useEffect(() => {
+        parseFloat(transfer) >= 0
+            ? setValidTransfer('')
+            : setValidTransfer(MessageConstants.INVALID_TRANSFER);
+    }, [transfer]);
+
+    useEffect(() => {
+        setTransfer(0);
+    }, [transferMode]);
+
+
 
     const transferMoney = async () => {
         if(validTransfer) {

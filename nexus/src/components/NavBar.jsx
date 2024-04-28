@@ -65,11 +65,6 @@ const NavBar = () => {
                                 exus
                             </Typography>
                         </Button>
-                        <Button sx={{textTransform: "none"}} color="inherit" onClick={() => navigate('/campaign')}>
-                            <Typography variant="h6" color="white">
-                                Campaigns
-                            </Typography>
-                        </Button>
                     </Stack>
                     <Stack direction="row" spacing={3}>
                         {renderButtons()}

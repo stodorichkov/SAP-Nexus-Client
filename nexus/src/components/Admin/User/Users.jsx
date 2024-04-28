@@ -56,9 +56,9 @@ const Users = (props) => {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }, [page, pageSize, handleError, navigate]);
 
