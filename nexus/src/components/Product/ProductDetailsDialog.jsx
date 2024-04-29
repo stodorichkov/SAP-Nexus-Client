@@ -6,17 +6,15 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    IconButton,
     Slide
 } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const ProductDetailsDialog = (props) => {
-
+    // eslint-disable-next-line react/prop-types
     const {open, onClose, name, description} = props
 
     const handleClose = () => {
@@ -35,7 +33,7 @@ const ProductDetailsDialog = (props) => {
                 <DialogTitle>{name}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        {description}
+                        Description: {description}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

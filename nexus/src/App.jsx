@@ -7,7 +7,7 @@ import {JwtConstants} from "./constants/JwtConstats.js";
 import NavBar from "./components/NavBar.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 import Admin from "./components/Admin/Admin.jsx";
-import Products from "./components/Products/Products.jsx";
+import Products from "./components/Product/Products.jsx";
 
 const App = () => {
     const renderRoutes = () => {
@@ -25,7 +25,6 @@ const App = () => {
 
             routes.push(
                 <Route key="profile" path="/profile" element={<Profile/>} />,
-                <Route key="products" path="/" element={<Products/>} />
             )
         } else {
             routes.push(
@@ -46,8 +45,7 @@ const App = () => {
             <BrowserRouter>
                 <NavBar/>
                 <Routes>
-                    {/*Add Home route*/}
-                    <Route path="/campaign"/>
+                    <Route key="products" path="/" element={<Products/>} />
                     {renderRoutes()}
                     <Route path="*" element={<Navigate to="/"/>}/>
                 </Routes>

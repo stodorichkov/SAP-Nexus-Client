@@ -4,6 +4,7 @@ export const PathConstants = {
     AUTH: API_BASE_URL + '/auth',
     ADMIN: API_BASE_URL + '/admin',
     PRODUCT: API_BASE_URL + '/product',
+    CAMPAIGN: API_BASE_URL + '/campaign',
     PROFILE: API_BASE_URL + '/profile',
     SALE: API_BASE_URL + '/sale'
 }
