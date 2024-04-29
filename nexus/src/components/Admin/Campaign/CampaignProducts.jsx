@@ -12,7 +12,7 @@ import {admin} from "../../../api/axios.jsx";
 import {JwtConstants} from "../../../constants/JwtConstats.js";
 import {useNavigate} from "react-router-dom";
 import {Delete, Edit} from "@mui/icons-material";
-import EditProductDiscount from "./EditProductDiscount.jsx";
+import ProductCampaignDialogue from "../Product/ProductCampaignDialogue.jsx";
 
 const CampaignProducts = (props) => {
     const PRODUCT_URL = '/product';
@@ -209,7 +209,7 @@ const CampaignProducts = (props) => {
                     </Stack>
                 </Stack>
             </Paper>
-            <EditProductDiscount
+            <ProductCampaignDialogue
                 product={product}
                 open={editDiscount}
                 handleClose={handleCloseEditDiscount}

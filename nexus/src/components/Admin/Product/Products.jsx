@@ -3,6 +3,7 @@ import {admin} from "../../../api/axios.jsx";
 import {JwtConstants} from "../../../constants/JwtConstats.js";
 import {useNavigate} from "react-router-dom";
 import {
+    Button,
     Container, Fab, IconButton,
     Paper,
     Stack,
@@ -12,9 +13,10 @@ import {
     TableHead, TablePagination,
     TableRow, Tooltip,
 } from "@mui/material";
-import {Add, Campaign, Delete, Edit} from "@mui/icons-material";
+import {Add, Campaign, Delete, Edit, OpenInNew} from "@mui/icons-material";
 import ProductDialogue from "./ProductDilogue.jsx";
-import EditProductCampaign from "./EditProductCampaign.jsx";
+import ProductCampaignDialogue from "./ProductCampaignDialogue.jsx";
+import {MessageConstants} from "../../../constants/MessageConstants.js";
 
 const Products = (props) => {
     const PRODUCT_URL = '/product';
@@ -45,16 +47,19 @@ const Products = (props) => {
         setProduct(product);
     }
     const handleCloseDialogue = () => {
+        setProduct(null);
         setDialogue(false);
     }
     const handleOpenEditCampaign = (product) => {
         setProduct(product);
         setEditCampaign(true);
     }
-
     const handleCloseEditCampaign = () => {
         setProduct(null);
         setEditCampaign(false);
+    }
+    const handleOpenImage = (image) => {
+        image !== null ? window.open(image, '_blank') : handleError(MessageConstants.INVALID_IMAGE);
     }
 
     const getProducts= useCallback(async () => {
@@ -113,12 +118,17 @@ const Products = (props) => {
     const renderButtons = (product) => {
         const buttons = [];
 
+        if(product?.campaign === null) {
+            buttons.push(
+                <Tooltip title="Pproduct campaign" key="editCampaign">
+                    <IconButton onClick={() => handleOpenEditCampaign(product)}>
+                        <Campaign color="secondary"/>
+                    </IconButton>
+                </Tooltip>,
+            );
+        }
+
         buttons.push(
-            <Tooltip title="Edit product campaign" key="editCampaign">
-                <IconButton onClick={() => handleOpenEditCampaign(product)}>
-                    <Campaign color="secondary"/>
-                </IconButton>
-            </Tooltip>,
             <Tooltip title="Edit product" key="edit">
                 <IconButton onClick={() => handleOpenDialogue(product)}>
                     <Edit/>
@@ -150,7 +160,15 @@ const Products = (props) => {
                         key={product.id}
                     >
                         <TableCell sx={{fontWeight: "bold"}}>
-                            {product.id}
+                            <Tooltip title="See product image" key="image">
+                                <Button
+                                    sx={{textTransform: "none", color: "black", fontWeight: "bold"}}
+                                    endIcon={<OpenInNew/>}
+                                    onClick={() => handleOpenImage(product.imageLink)}
+                                >
+                                    {product.id}
+                                </Button>
+                            </Tooltip>
                         </TableCell>
                         <TableCell sx={{minWidth: 200}}>
                             {product.name}
@@ -179,7 +197,7 @@ const Products = (props) => {
                         <TableCell sx={{minWidth: 50}}>
                             {product.discount + " %"}
                         </TableCell>
-                        <TableCell sx={{minWidth: 50}}>
+                        <TableCell sx={{minWidth: 160}}>
                             {product.campaignDiscount + " %"}
                         </TableCell>
                         <TableCell
@@ -268,7 +286,7 @@ const Products = (props) => {
                 handleClose={handleCloseDialogue}
                 handleError={handleError}
             />
-            <EditProductCampaign
+            <ProductCampaignDialogue
                 product={product}
                 open={editCampaign}
                 handleClose={handleCloseEditCampaign}

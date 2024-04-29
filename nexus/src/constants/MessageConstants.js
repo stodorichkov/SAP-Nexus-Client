@@ -15,5 +15,6 @@ export const MessageConstants = {
     INVALID_MIN_PRICE: 'Min price must be positive or zero!',
     INVALID_PRICE: 'Price must be greater or equal to Min price!',
     INVALID_AVAILABILITY: 'Availability must be positive or zero!',
-    FIELD_CANNOT_BE_BLANK: 'Field can not be blank!'
+    FIELD_CANNOT_BE_BLANK: 'Field can not be blank!',
+    INVALID_IMAGE: 'Invalid image'
 }

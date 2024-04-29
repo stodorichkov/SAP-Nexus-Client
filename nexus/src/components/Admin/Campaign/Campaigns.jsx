@@ -170,6 +170,7 @@ const Campaigns = (props) => {
                     key={campaign.name}
                 >
                     <TableCell sx={{minWidth: 170}}>
+                        <Tooltip title="See campaign products" key="products">
                         <Button
                             sx={{textTransform: "none", color: "black", fontWeight: "bold"}}
                             endIcon={<OpenInNew/>}
@@ -177,6 +178,7 @@ const Campaigns = (props) => {
                         >
                             {campaign.name}
                         </Button>
+                        </Tooltip>
                     </TableCell>
                     <TableCell sx={{minWidth: 50}}>
                         {formatDate(campaign.startDate)}

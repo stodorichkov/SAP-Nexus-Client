@@ -182,7 +182,6 @@ const ProductDialogue = (props) => {
             || validPrice
             || validDiscount
             || validAvailability
-            || image === null
         ) {
             return;
         }
@@ -196,7 +195,12 @@ const ProductDialogue = (props) => {
         formData.append('minPrice', minPrice);
         formData.append('availability', availability);
         formData.append('discount', discount);
-        formData.append('image', image);
+        if(image !== null) {
+            formData.append('image', image);
+        }
+
+
+        console.log(formData.get('image'))
 
         try {
             if(product) {
@@ -212,6 +216,7 @@ const ProductDialogue = (props) => {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
             } else {
+                console.log(err.response?.data)
                 handleError(err.response?.data);
             }
         }
