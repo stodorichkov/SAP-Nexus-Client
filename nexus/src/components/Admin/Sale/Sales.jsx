@@ -1,10 +1,9 @@
 import {
-    Alert,
     Button,
     Container,
     Grid,
     InputAdornment,
-    Paper, Snackbar,
+    Paper,
     Stack,
     TextField,
 } from "@mui/material";
@@ -12,44 +11,36 @@ import { MobileDatePicker, LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {useState} from "react";
 import dayjs from 'dayjs';
-import {admin} from "../../api/axios.jsx";
-import {JwtConstants} from "../../constants/JwtConstats.js";
+import {admin} from "../../../api/axios.jsx";
+import {JwtConstants} from "../../../constants/JwtConstats.js";
 import {useNavigate} from "react-router-dom";
 
-const Sales = () => {
+const Sales = (props) => {
     const TURNOVER_URL = '/turnover';
+    const dateFormat = 'YYYY-MM-DD';
 
-    const [startDate, setStartDate] = useState(dayjs().format("YYYY-MM-DD"));
-    const [endDate, setEndDate] = useState(dayjs().format("YYYY-MM-DD"));
+    // eslint-disable-next-line react/prop-types
+    const handleError = props.handleError;
+
+    const [startDate, setStartDate] = useState(dayjs());
+    const [endDate, setEndDate] = useState(dayjs());
     const [turnover, setTurnover] = useState(0);
-
-    const [open, setOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
 
-    const handleStartDateChange = (date) => {
-        setStartDate(date.format("YYYY-MM-DD"));
-        setEndDate(date.format("YYYY-MM-DD"));
+    const handleChangeStartDate = (date) => {
+        setStartDate(date);
+        setEndDate(date);
     };
-    const handleEndDateChange = (date) => {
-        setEndDate(date.format("YYYY-MM-DD"));
-    };
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
+    const handleChangeEndDate = (date) => {
+        setEndDate(date);
     };
 
     const calculateTurnover = async () => {
         const params = {
-            startDate: startDate,
-            endDate: endDate
+            startDate: startDate.format(dateFormat),
+            endDate: endDate.format(dateFormat)
         }
-
-        console.log(params)
 
         try {
             const response = await admin.get(TURNOVER_URL, {
@@ -64,30 +55,12 @@ const Sales = () => {
             }
 
             setTurnover(0);
-            setErrorMessage(err.response?.data);
-            setOpen(true);
+            handleError(err.response?.data);
         }
-    }
-
-    const renderAlert  = () => {
-        return (
-            <Snackbar
-                open={open}
-                autoHideDuration={5000}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
-                onClose={handleClose}
-                sx={{marginTop: '8rem', maxWidth: '20%'}}
-            >
-                <Alert severity="error" variant="filled" onClose={handleClose}>
-                    {errorMessage}
-                </Alert>
-            </Snackbar>
-        )
     }
 
     return (
         <Container maxWidth="md">
-            {renderAlert()}
             <Paper>
                 <Stack spacing={4} justifyContent="center" alignItems="center">
                         <Grid container spacing={4} justifyContent='center' alignItems="flex-start">
@@ -96,8 +69,8 @@ const Sales = () => {
                                     <MobileDatePicker
                                         label="Start date"
                                         format="DD/MM/YYYY"
-                                        value={dayjs(startDate)}
-                                        onChange={handleStartDateChange}
+                                        value={startDate}
+                                        onChange={handleChangeStartDate}
                                         maxDate={dayjs()}
                                     />
                                 </LocalizationProvider>
@@ -107,9 +80,9 @@ const Sales = () => {
                                     <MobileDatePicker
                                         label="End date"
                                         format="DD/MM/YYYY"
-                                        value={dayjs(endDate)}
-                                        onChange={handleEndDateChange}
-                                        minDate={dayjs(startDate)}
+                                        value={startDate}
+                                        onChange={handleChangeEndDate}
+                                        minDate={startDate}
                                         maxDate={dayjs()}
                                     />
                                 </LocalizationProvider>
@@ -125,7 +98,7 @@ const Sales = () => {
                             <TextField
                                 fullWidth
                                 label="Turnover"
-                                value={parseFloat(turnover).toFixed(2)}
+                                value={turnover.toFixed(2)}
                                 InputProps={{
                                     readOnly: true,
                                     endAdornment: (

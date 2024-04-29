@@ -26,8 +26,8 @@ const Login = () => {
         setErrorMessage("")
     }, [username, password]);
 
-    const signIn = async (e) => {
-        e.preventDefault();
+    const signIn = async (event) => {
+        event.preventDefault();
 
         const content = {
             username: username,
@@ -116,7 +116,7 @@ const Login = () => {
                 </Grid>
             </Grid>
         </form>
-    )
+    );
 }
 
 export default Login
