@@ -28,6 +28,7 @@ const Users = (props) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [totalElements, setTotalElements] = useState(0);
+    const [promoteFlag, setPromoteFlag] = useState(false);
 
     const navigate = useNavigate();
 
@@ -56,15 +57,15 @@ const Users = (props) => {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }, [page, pageSize, handleError, navigate]);
 
     useEffect(() => {
         getUsers().then(null);
-    }, [getUsers]);
+    }, [getUsers, promoteFlag]);
 
     const promote = async (user) => {
         const url = PROMOTE_URL + user.username;
@@ -72,14 +73,14 @@ const Users = (props) => {
         try {
             await admin.patch(url);
 
-            getUsers().then(null);
+            setPromoteFlag(!promoteFlag);
         } catch (err) {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }
 
@@ -89,14 +90,14 @@ const Users = (props) => {
         try {
             await admin.patch(url);
 
-            getUsers().then(null);
+            setPromoteFlag(!promoteFlag);
         } catch (err) {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }
 

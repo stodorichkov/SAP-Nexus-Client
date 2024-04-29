@@ -21,8 +21,7 @@ import {
     PlayCircle,
     StopCircle
 } from "@mui/icons-material";
-import AddCampaign from "./AddCampaign.jsx";
-import EditCampaign from "./EditCapaign.jsx";
+import CampaignDialogue from "./CampaignDialogue.jsx";
 
 const Campaigns = (props) => {
     const CAMPAIGNS_URL = '/campaigns';
@@ -38,8 +37,7 @@ const Campaigns = (props) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(5);
     const [totalElements, setTotalElements] = useState(0);
-    const [add, setAdd] = useState(false);
-    const [edit, setEdit] = useState(false);
+    const [dialogue, setDialogue] = useState(false);
     const [campaign, setCampaign] = useState(null);
 
     const navigate = useNavigate();
@@ -51,15 +49,12 @@ const Campaigns = (props) => {
         setPageSize(+event.target.value);
         setPage(0);
     }
-    const handleOpenAdd = () => setAdd(true);
-    const handleCloseAdd = () => setAdd(false);
-    const handleOpenEdit = (campaign) => {
+    const handleOpenDialogue = (campaign) => {
+        setDialogue(true);
         setCampaign(campaign);
-        setEdit(true);
     }
-    const handleCloseEdit = () => {
-        setCampaign(null);
-        setEdit(false);
+    const handleCloseDialogue = () => {
+        setDialogue(false);
     }
 
     const getCampaigns = useCallback(async () => {
@@ -79,15 +74,15 @@ const Campaigns = (props) => {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }, [page, pageSize, handleError, navigate]);
 
     useEffect(() => {
         getCampaigns().then(null);
-    }, [getCampaigns, add, edit,]);
+    }, [getCampaigns, dialogue]);
 
     const formatDate = (date) => {
         return dayjs(date).isValid() ? dayjs(date).format(dateFormat) : '-';
@@ -104,9 +99,9 @@ const Campaigns = (props) => {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }
 
@@ -121,9 +116,9 @@ const Campaigns = (props) => {
             if (err.response.status === 401) {
                 localStorage.removeItem(JwtConstants.KEY);
                 navigate(0);
+            } else {
+                handleError(err.response?.data);
             }
-
-            handleError(err.response?.data);
         }
     }
 
@@ -150,7 +145,7 @@ const Campaigns = (props) => {
 
         buttons.push(
             <Tooltip title="Edit" key="edit">
-                <IconButton onClick={() => handleOpenEdit(campaign)}>
+                <IconButton onClick={() => handleOpenDialogue(campaign)}>
                     <Edit/>
                 </IconButton>
             </Tooltip>
@@ -174,7 +169,8 @@ const Campaigns = (props) => {
                 <TableRow
                     key={campaign.name}
                 >
-                    <TableCell sx={{width: '40%'}}>
+                    <TableCell sx={{minWidth: 170}}>
+                        <Tooltip title="See campaign products" key="products">
                         <Button
                             sx={{textTransform: "none", color: "black", fontWeight: "bold"}}
                             endIcon={<OpenInNew/>}
@@ -182,14 +178,15 @@ const Campaigns = (props) => {
                         >
                             {campaign.name}
                         </Button>
+                        </Tooltip>
                     </TableCell>
-                    <TableCell sx={{width: '20%'}}>
+                    <TableCell sx={{minWidth: 50}}>
                         {formatDate(campaign.startDate)}
                     </TableCell>
-                    <TableCell sx={{width: '20%'}}>
+                    <TableCell sx={{minWidth: 50}}>
                         {formatDate(campaign.endDate)}
                     </TableCell>
-                    <TableCell sx={{width: '20%'}}>
+                    <TableCell>
                         {renderButtons(campaign)}
                     </TableCell>
                 </TableRow>
@@ -241,12 +238,18 @@ const Campaigns = (props) => {
                     bottom: 16,
                     right: 16,
                 }}
-                onClick={handleOpenAdd}
+                onClick={() => handleOpenDialogue(null)}
             >
                 <Add />
             </Fab>
-            <AddCampaign open={add} handleClose={handleCloseAdd} handleError={handleError}/>
-            <EditCampaign campaign={campaign} open={edit} handleClose={handleCloseEdit} handleError={handleError}/>
+            {/*<AddCampaign open={add} handleClose={handleCloseAdd} handleError={handleError}/>*/}
+            {/*<EditCampaign campaign={campaign} open={edit} handleClose={handleCloseEdit} handleError={handleError}/>*/}
+            <CampaignDialogue
+                campaign={campaign}
+                open={dialogue}
+                handleClose={handleCloseDialogue}
+                handleError={handleError}
+            />
         </Container>
     )
 }

@@ -5,6 +5,7 @@ import Users from "./User/Users.jsx";
 import Sales from "./Sale/Sales.jsx";
 import Campaigns from "./Campaign/Campaigns.jsx";
 import CampaignProducts from "./Campaign/CampaignProducts.jsx";
+import Products from "./Product/Products.jsx";
 
 const Admin = () => {
     const [tab, setTab] = useState('Users');
@@ -13,6 +14,9 @@ const Admin = () => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleChangeTab = (event, newTab) => {
+        if(newTab !== 'Campaign products') {
+            setCampaign(null)
+        }
         setTab(newTab);
         setOpen(false);
     };
@@ -76,7 +80,7 @@ const Admin = () => {
                     <Users handleError={handleError}/>
                 </TabPanel>
                 <TabPanel value="Products">
-                    Item Two
+                    <Products handleError={handleError}/>
                 </TabPanel>
                 <TabPanel value="Campaigns">
                     <Campaigns
