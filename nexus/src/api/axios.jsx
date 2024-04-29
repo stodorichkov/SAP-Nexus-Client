@@ -19,6 +19,10 @@ export const product = axios.create({
     baseURL: PathConstants.PRODUCT
 });
 
+export const campaign = axios.create({
+    baseURL: PathConstants.CAMPAIGN
+});
+
 export const profile = axios.create({
     baseURL: PathConstants.PROFILE,
     headers: {

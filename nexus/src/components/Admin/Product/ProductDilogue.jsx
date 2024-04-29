@@ -244,7 +244,7 @@ const ProductDialogue = (props) => {
                     <Grid container spacing={3} justifyContent='center'>
                         <Grid item xs={12}>
                             <Typography variant="h4" color="textPrimary" align="center">
-                                {text} campaign
+                                {text} product
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
